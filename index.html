@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ESE Instruments</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#1a3a5c;--cobalt:#2a6fa8;--blue2:#2a9fd6;
+  --red:#c0392b;--redh:#a93226;
+  --ice:#f0f4f8;--mist:#dde3e8;--bg:#fafafa;
+  --sub:#6b7f90;--light:#9aacba;--dark:#0d1f2d;
+  --white:#ffffff;
+}
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#e8ecef;min-height:100vh;}
+
+/* ── STICKY NAV WRAPPER ── */
+.sticky-shell{position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(26,58,92,.13);}
+
+/* ── HEADER ── */
+header{background:var(--bg);border-top:3px solid var(--navy);position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(26,58,92,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(26,58,92,.04) 1px,transparent 1px);
+  background-size:24px 24px;}
+.ruler{position:absolute;top:-3px;left:0;right:0;height:10px;pointer-events:none;overflow:hidden;}
+.ruler span{position:absolute;top:0;background:var(--bg);width:1px;}
+.header-inner{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:22px 40px;display:flex;align-items:center;gap:0;}
+.logo-btn{display:flex;align-items:center;gap:16px;background:none;border:none;cursor:pointer;flex-shrink:0;padding:0;}
+.logo-text .ese{display:block;font-size:36px;font-weight:700;color:var(--navy);letter-spacing:-.5px;line-height:1;}
+.logo-text .inst{display:block;font-size:11px;font-weight:300;color:var(--navy);letter-spacing:7px;margin-top:5px;}
+.vr{width:1px;height:56px;background:var(--mist);margin:0 32px;flex-shrink:0;}
+.tagline{flex:1;}
+.tagline p{font-size:12px;color:var(--sub);letter-spacing:.3px;margin-bottom:8px;}
+.cert-pills{display:flex;gap:6px;flex-wrap:wrap;}
+.cert{font-size:9px;font-weight:600;color:var(--cobalt);border:1px solid var(--mist);padding:2px 6px;border-radius:2px;letter-spacing:.4px;}
+.hdr-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;}
+.social-row{display:flex;gap:7px;}
+.icon-btn{width:28px;height:28px;border-radius:4px;background:var(--navy);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;transition:background .15s;}
+.icon-btn:hover{background:var(--cobalt);}
+.contact-info p{font-size:10px;color:var(--light);text-align:right;margin:1px 0;}
+.hdr-rule{position:relative;z-index:1;height:1px;background:var(--mist);}
+
+/* ── NAV ── */
+nav{background:var(--navy);}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 40px;display:flex;align-items:center;}
+.nav-item{font-size:11.5px;font-weight:400;text-transform:uppercase;letter-spacing:.6px;
+  padding:13px 18px;background:transparent;color:rgba(255,255,255,.55);
+  border:none;cursor:pointer;font-family:inherit;transition:color .15s,background .15s;position:relative;}
+.nav-item:hover{color:#fff;background:rgba(255,255,255,.07);}
+.nav-item.active{color:#fff;}
+.nav-item.active::after{content:'';position:absolute;bottom:0;left:18px;right:18px;height:2px;background:var(--blue2);border-radius:2px 2px 0 0;}
+.nav-spacer{flex:1;}
+.nav-cta{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#fff;
+  background:var(--red);border:none;padding:8px 16px;border-radius:2px;cursor:pointer;font-family:inherit;transition:background .15s;}
+.nav-cta:hover{background:var(--redh);}
+
+/* ── PAGE TRANSITIONS ── */
+.page{animation:fadeUp .32s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(110deg,#f0f4f8 0%,#e4eaf0 100%);border-bottom:1px solid var(--mist);position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;top:-60px;right:-60px;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(26,58,92,.05) 0%,transparent 70%);pointer-events:none;}
+.scale-ticks{position:absolute;right:0;top:0;bottom:0;width:48px;pointer-events:none;}
+.scale-ticks .vline{position:absolute;right:22px;top:0;bottom:0;width:1px;background:rgba(26,58,92,.1);}
+.hero-inner{max-width:1100px;margin:0 auto;padding:64px 40px 60px;
+  display:grid;grid-template-columns:1fr 320px;gap:60px;align-items:center;position:relative;z-index:1;}
+.eyebrow{display:flex;align-items:center;gap:10px;font-size:10px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;color:var(--cobalt);margin-bottom:16px;}
+.eyebrow::before{content:'';display:inline-block;width:24px;height:1.5px;background:var(--cobalt);}
+h1{font-size:46px;font-weight:700;color:var(--navy);line-height:1.13;letter-spacing:-.5px;margin-bottom:18px;}
+h1 em{font-style:normal;font-weight:300;color:var(--cobalt);}
+.hero-p{font-size:15px;font-weight:300;color:var(--sub);line-height:1.75;max-width:520px;margin-bottom:32px;}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-primary{background:var(--navy);color:#fff;font-size:12px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1px;padding:13px 28px;border:none;border-radius:2px;cursor:pointer;font-family:inherit;transition:background .15s;}
+.btn-primary:hover{background:var(--cobalt);}
+.btn-ghost{background:transparent;color:var(--navy);font-size:12px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.8px;padding:13px 24px;
+  border:1.5px solid var(--navy);border-radius:2px;cursor:pointer;font-family:inherit;transition:all .15s;}
+.btn-ghost:hover{background:var(--navy);color:#fff;}
+.specs-card{background:#fff;border:1px solid var(--mist);border-radius:3px;box-shadow:0 8px 32px rgba(26,58,92,.08);overflow:hidden;}
+.specs-card-hdr{padding:20px 24px 16px;border-bottom:1px solid var(--ice);}
+.specs-card-hdr p{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--light);margin:0;}
+.spec-row{display:flex;justify-content:space-between;align-items:center;padding:10px 24px;border-top:1px solid #f5f7f9;}
+.spec-label{font-size:10px;color:var(--light);}
+.spec-val{font-size:13px;font-weight:700;color:var(--navy);letter-spacing:-.2px;}
+.spec-unit{font-size:10px;font-weight:400;color:var(--sub);margin-left:3px;}
+
+/* ── PRODUCT STRIP ── */
+.product-strip{background:#fff;border-bottom:1px solid var(--mist);}
+.strip-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);}
+.prod-card{text-align:left;display:flex;align-items:flex-start;gap:18px;padding:32px;
+  background:#fff;border:none;cursor:pointer;font-family:inherit;transition:background .15s;
+  border-right:1px solid var(--mist);}
+.prod-card:last-child{border-right:none;}
+.prod-card:hover{background:var(--ice);}
+.prod-icon{width:40px;height:40px;border-radius:50%;background:var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;color:#fff;font-size:11px;font-weight:800;letter-spacing:-.3px;}
+.prod-card h3{font-size:13px;font-weight:700;color:var(--navy);margin:0 0 5px;}
+.prod-card p{font-size:11px;color:var(--sub);font-weight:300;line-height:1.6;margin:0 0 10px;}
+.view-series{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;
+  color:var(--cobalt);text-transform:uppercase;letter-spacing:.5px;}
+
+/* ── TRUST ── */
+.trust-bar{background:#f8fafc;border-bottom:1px solid var(--mist);padding:18px 0;}
+.trust-inner{max-width:1100px;margin:0 auto;padding:0 40px;display:flex;gap:32px;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:10px;}
+.trust-icon{font-size:18px;}
+.trust-label{font-size:12px;font-weight:700;color:var(--navy);}
+.trust-sub{font-size:11px;color:var(--light);}
+
+/* ── FOOTER ── */
+footer{background:var(--navy);position:relative;overflow:hidden;}
+footer::before{content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+  background-size:32px 32px;pointer-events:none;}
+.footer-inner{position:relative;z-index:1;max-width:1100px;margin:0 auto;
+  padding:36px 40px 24px;display:flex;align-items:center;gap:36px;flex-wrap:wrap;}
+.footer-logo{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.footer-ese{font-size:22px;font-weight:700;color:#fff;letter-spacing:-.3px;}
+.footer-inst{font-size:8.5px;font-weight:300;color:rgba(255,255,255,.3);letter-spacing:5px;display:block;margin-top:2px;}
+.footer-vr{width:1px;height:40px;background:rgba(255,255,255,.12);flex-shrink:0;}
+.footer-contact-group{flex:1;display:flex;gap:36px;flex-wrap:wrap;}
+.fcg-item span{font-size:9px;font-weight:700;color:rgba(255,255,255,.28);letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:4px;}
+.fcg-item p{font-size:12px;color:rgba(255,255,255,.62);font-weight:300;margin:0;}
+.footer-social{display:flex;gap:7px;}
+.footer-icon-btn{width:26px;height:26px;border-radius:4px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s;}
+.footer-icon-btn:hover{background:rgba(255,255,255,.18);}
+.footer-rule{position:relative;z-index:1;max-width:1100px;margin:0 auto;border:none;border-top:1px solid rgba(255,255,255,.08);}
+.footer-bottom{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:14px 40px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.footer-copy{font-size:10px;color:rgba(255,255,255,.2);}
+.footer-certs{display:flex;gap:6px;}
+.footer-cert{font-size:9px;font-weight:600;color:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.1);padding:2px 7px;border-radius:2px;}
+
+/* ═══ CATALOG PAGE ═══ */
+#catalog-page{display:none;min-height:100vh;background:#f8fafc;}
+.cat-header{background:var(--bg);position:relative;overflow:hidden;}
+.cat-header::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(26,58,92,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(26,58,92,.04) 1px,transparent 1px);
+  background-size:24px 24px;}
+.cat-hdr-inner{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:18px 40px;
+  display:flex;align-items:center;justify-content:space-between;}
+.cat-logo{display:flex;align-items:center;gap:14px;background:none;border:none;cursor:pointer;}
+.cat-ese{font-size:28px;font-weight:700;color:var(--navy);letter-spacing:-.5px;line-height:1;}
+.cat-inst{font-size:10px;font-weight:300;color:var(--navy);letter-spacing:6px;margin-top:4px;display:block;}
+.back-btn{display:flex;align-items:center;gap:7px;background:var(--ice);border:1px solid var(--mist);
+  color:var(--navy);font-size:12px;font-weight:600;padding:9px 16px;border-radius:2px;cursor:pointer;
+  font-family:inherit;transition:all .15s;}
+.back-btn:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+.cat-hdr-rule{height:1px;background:var(--mist);}
+.cat-nav{background:var(--navy);}
+.cat-nav-inner{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;align-items:center;}
+
+/* ── CATALOG HERO ── */
+.cat-hero{position:relative;overflow:hidden;background:var(--dark);}
+.cat-hero-img{width:100%;height:340px;object-fit:cover;object-position:center;display:block;opacity:.85;}
+.cat-hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(13,31,45,.88) 0%,rgba(13,31,45,.3) 60%,transparent 100%);}
+.cat-hero-text{position:absolute;top:50%;left:0;transform:translateY(-50%);padding:0 60px;max-width:600px;}
+.cat-hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:var(--blue2);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.cat-hero-eyebrow::before{content:'';display:inline-block;width:20px;height:1.5px;background:var(--blue2);}
+.cat-hero h2{font-size:38px;font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.5px;margin-bottom:10px;}
+.cat-hero h2 em{font-style:normal;font-weight:300;color:var(--blue2);}
+.cat-hero p{font-size:14px;font-weight:300;color:rgba(255,255,255,.65);line-height:1.7;max-width:440px;}
+.cat-hero-placeholder{height:340px;background:linear-gradient(135deg,var(--dark) 0%,#1a3a5c 50%,#0d2a40 100%);
+  display:flex;align-items:center;justify-content:flex-start;padding:0 60px;position:relative;overflow:hidden;}
+.cat-hero-placeholder::after{content:'';position:absolute;right:-40px;top:-40px;width:360px;height:360px;
+  border-radius:50%;background:radial-gradient(circle,rgba(42,159,214,.12) 0%,transparent 70%);}
+
+/* ── CATALOG TOOLBAR ── */
+.cat-content{max-width:1200px;margin:0 auto;padding:40px 40px 60px;}
+.cat-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px;}
+.cat-toolbar-left h3{font-size:18px;font-weight:700;color:var(--navy);}
+.cat-toolbar-left p{font-size:12px;color:var(--light);margin-top:2px;}
+.toolbar-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+
+/* ── SEARCH BAR ── */
+.search-wrap{position:relative;}
+.search-wrap input{height:36px;padding:0 12px 0 34px;border:1.5px solid var(--mist);border-radius:2px;
+  font-size:12px;color:var(--navy);font-family:inherit;outline:none;width:220px;background:#fff;transition:border-color .15s;}
+.search-wrap input:focus{border-color:var(--cobalt);}
+.search-clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--light);font-size:14px;line-height:1;display:none;}
+
+/* ── FILTER PILLS ── */
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
+.filter-pill{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  padding:5px 12px;border-radius:20px;border:1.5px solid var(--mist);background:#fff;
+  color:var(--sub);cursor:pointer;font-family:inherit;transition:all .15s;}
+.filter-pill:hover{border-color:var(--cobalt);color:var(--cobalt);}
+.filter-pill.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+
+/* ── VIEW TOGGLE ── */
+.view-toggle{display:flex;background:#fff;border:1px solid var(--mist);border-radius:2px;overflow:hidden;}
+.view-toggle button{padding:8px 16px;font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.5px;border:none;cursor:pointer;font-family:inherit;transition:all .15s;}
+.view-toggle button.active{background:var(--navy);color:#fff;}
+.view-toggle button:not(.active){background:#fff;color:var(--sub);}
+
+/* ── NO RESULTS ── */
+.no-results{text-align:center;padding:60px 20px;color:var(--light);}
+.no-results svg{opacity:.3;margin-bottom:12px;}
+.no-results p{font-size:14px;font-weight:600;color:var(--sub);}
+.no-results span{font-size:12px;}
+
+/* ── PRODUCT GRID ── */
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;}
+.prod-grid.list-view{grid-template-columns:1fr;gap:12px;}
+.mkp-card{background:#fff;border:1px solid var(--mist);border-radius:3px;
+  box-shadow:0 2px 8px rgba(26,58,92,.06);overflow:hidden;
+  transition:box-shadow .2s,transform .2s;display:flex;flex-direction:column;}
+.mkp-card:hover{box-shadow:0 12px 36px rgba(26,58,92,.12);transform:translateY(-3px);}
+.mkp-card.hidden{display:none;}
+.card-img-wrap{background:var(--ice);border-bottom:1px solid var(--mist);
+  height:200px;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden;}
+.card-img-wrap img{max-width:100%;max-height:100%;object-fit:contain;display:block;}
+.card-body{padding:20px;flex:1;display:flex;flex-direction:column;}
+.card-series-tag{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;
+  letter-spacing:1px;color:var(--cobalt);background:var(--ice);border:1px solid var(--mist);
+  padding:2px 8px;border-radius:2px;margin-bottom:10px;align-self:flex-start;}
+.card-name{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.3;}
+.card-desc{font-size:12px;color:var(--sub);font-weight:300;line-height:1.65;flex:1;margin-bottom:16px;}
+.card-spec-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;padding:10px 12px;
+  background:var(--ice);border-radius:2px;}
+.card-spec-item{display:flex;flex-direction:column;gap:2px;}
+.card-spec-key{font-size:8.5px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.8px;}
+.card-spec-val{font-size:11px;font-weight:600;color:var(--navy);}
+.card-actions{display:flex;gap:8px;margin-top:auto;}
+.btn-ds{flex:1;background:var(--navy);color:#fff;font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.7px;padding:9px 12px;border:none;border-radius:2px;
+  cursor:pointer;font-family:inherit;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:5px;}
+.btn-ds:hover{background:var(--cobalt);}
+.btn-rq{flex:1;background:transparent;color:var(--red);font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.7px;padding:9px 12px;
+  border:1.5px solid var(--red);border-radius:2px;
+  cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px;}
+.btn-rq:hover{background:var(--red);color:#fff;}
+.list-view .mkp-card{flex-direction:row;transform:none!important;}
+.list-view .mkp-card:hover{box-shadow:0 6px 20px rgba(26,58,92,.1);}
+.list-view .card-img-wrap{width:200px;height:auto;min-height:140px;flex-shrink:0;border-bottom:none;border-right:1px solid var(--mist);}
+.list-view .card-body{padding:20px 24px;}
+.list-view .card-desc{display:none;}
+
+/* ── CATALOG CTA ── */
+.cat-cta{background:var(--navy);border-radius:3px;padding:28px 32px;
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:40px;}
+.cat-cta h4{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px;}
+.cat-cta p{font-size:13px;font-weight:300;color:rgba(255,255,255,.5);margin:0;}
+.cat-cta-btn{background:var(--red);color:#fff;font-weight:700;text-transform:uppercase;
+  letter-spacing:.8px;font-size:12px;padding:12px 24px;border-radius:2px;border:none;cursor:pointer;
+  font-family:inherit;transition:background .15s;flex-shrink:0;}
+.cat-cta-btn:hover{background:var(--redh);}
+
+/* ── MODALS ── */
+.modal-overlay{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;
+  padding:16px;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);animation:fadeIn .18s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.modal-box{background:#fff;border-radius:3px;box-shadow:0 25px 60px rgba(0,0,0,.3);width:100%;max-width:420px;overflow:hidden;animation:slideUp .22s ease;}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.modal-hdr{background:var(--navy);padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start;}
+.modal-hdr-text p{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.5);margin:0 0 5px;}
+.modal-hdr-text h3{font-size:15px;font-weight:700;color:#fff;margin:0 0 3px;line-height:1.3;}
+.modal-hdr-text span{font-size:11px;color:rgba(255,255,255,.4);}
+.modal-close{background:none;border:none;color:rgba(255,255,255,.5);font-size:22px;cursor:pointer;line-height:1;padding:0;}
+.modal-close:hover{color:#fff;}
+.modal-body{padding:24px;display:flex;flex-direction:column;gap:14px;}
+.modal-body p{font-size:13px;color:var(--sub);margin:0;}
+.field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--light);margin-bottom:5px;}
+.field input,.field textarea{width:100%;border:1.5px solid var(--mist);border-radius:2px;padding:9px 12px;
+  font-size:13px;color:var(--navy);outline:none;font-family:inherit;transition:border-color .15s;box-sizing:border-box;}
+.field input:focus,.field textarea:focus{border-color:var(--cobalt);}
+.field input.error,.field textarea.error{border-color:var(--red);}
+.field-err{font-size:10px;color:var(--red);margin-top:3px;display:none;}
+.field textarea{resize:none;height:80px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.modal-submit{background:var(--navy);color:#fff;font-weight:700;font-size:13px;padding:12px;
+  border-radius:2px;border:none;cursor:pointer;font-family:inherit;transition:background .15s;
+  display:flex;align-items:center;justify-content:center;gap:8px;}
+.modal-submit:hover{background:var(--cobalt);}
+.modal-success{padding:48px 32px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;}
+.success-icon{width:56px;height:56px;border-radius:50%;background:#d1fae5;
+  display:flex;align-items:center;justify-content:center;font-size:28px;color:#059669;}
+.modal-success h4{font-size:18px;font-weight:800;color:var(--navy);margin:0;}
+.modal-success p{font-size:13px;color:var(--sub);max-width:240px;margin:0;}
+.modal-success button{margin-top:8px;background:var(--navy);color:#fff;font-weight:700;
+  padding:10px 32px;border-radius:2px;border:none;cursor:pointer;font-size:13px;font-family:inherit;}
+.result-count{font-size:11px;color:var(--light);margin-bottom:16px;}
+.result-count span{color:var(--navy);font-weight:700;}
+</style>
+</head>
+<body>
+
+<!-- ═══ HOME PAGE ═══ -->
+<div id="home-page">
+  <div class="sticky-shell">
+    <header>
+      <div class="ruler" id="ruler"></div>
+      <div class="header-inner">
+        <button class="logo-btn" onclick="showHome()">
+          <svg width="68" height="68" viewBox="-33 -33 66 66">
+            <circle cx="0" cy="0" r="28" fill="none" stroke="#1a3a5c" stroke-width="1.6"/>
+            <circle cx="0" cy="0" r="19" fill="none" stroke="#1a3a5c" stroke-width="0.7" stroke-dasharray="2.5 3" opacity=".45"/>
+            <line x1="-33" y1="0" x2="-22" y2="0" stroke="#1a3a5c" stroke-width="1.8"/>
+            <line x1="22" y1="0" x2="33" y2="0" stroke="#1a3a5c" stroke-width="1.8"/>
+            <line x1="0" y1="-33" x2="0" y2="-22" stroke="#1a3a5c" stroke-width="1.8"/>
+            <line x1="0" y1="22" x2="0" y2="33" stroke="#1a3a5c" stroke-width="1.8"/>
+            <line x1="28" y1="0" x2="23" y2="0" stroke="#1a3a5c" stroke-width="1.2"/>
+            <line x1="-28" y1="0" x2="-23" y2="0" stroke="#1a3a5c" stroke-width="1.2"/>
+            <line x1="0" y1="-28" x2="0" y2="-23" stroke="#1a3a5c" stroke-width="1.2"/>
+            <line x1="0" y1="28" x2="0" y2="23" stroke="#1a3a5c" stroke-width="1.2"/>
+            <line x1="19.8" y1="-19.8" x2="17" y2="-17" stroke="#1a3a5c" stroke-width="0.9"/>
+            <line x1="19.8" y1="19.8" x2="17" y2="17" stroke="#1a3a5c" stroke-width="0.9"/>
+            <line x1="-19.8" y1="19.8" x2="-17" y2="17" stroke="#1a3a5c" stroke-width="0.9"/>
+            <line x1="-19.8" y1="-19.8" x2="-17" y2="-17" stroke="#1a3a5c" stroke-width="0.9"/>
+            <line x1="0" y1="0" x2="15" y2="-15" stroke="#c0392b" stroke-width="2.2" stroke-linecap="round"/>
+            <circle cx="0" cy="0" r="3.5" fill="#1a3a5c"/>
+            <circle cx="0" cy="0" r="1.5" fill="#fafafa"/>
+            <circle cx="15" cy="-15" r="2" fill="#c0392b"/>
+          </svg>
+          <div class="logo-text"><span class="ese">ESE</span><span class="inst">INSTRUMENTS</span></div>
+        </button>
+        <div class="vr"></div>
+        <div class="tagline">
+          <p>Precision Measurement &amp; Industrial Sensing</p>
+          <div class="cert-pills">
+            <span class="cert">ISO 9001</span><span class="cert">EN 61326</span><span class="cert">ATEX</span><span class="cert">CE</span>
+          </div>
+        </div>
+        <div class="hdr-right">
+          <div class="social-row">
+            <button class="icon-btn" title="LinkedIn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="2" y="9" width="4" height="13" fill="white"/><circle cx="4" cy="5" r="2.2" fill="white"/><path d="M10 9h4v1.8c.5-1 1.8-2 3.5-2C20.8 8.8 22 10.7 22 13.5V22h-4v-6c0-1.4-.4-2.4-1.7-2.4-1.3 0-2.3 1.1-2.3 2.6V22h-4z" fill="white"/></svg></button>
+            <button class="icon-btn" title="WhatsApp"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.11-1.34A9.95 9.95 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z" stroke="white" stroke-width="1.3"/><path d="M8.5 8.5s-.6.1-.9.6c-.3.5-1 1.8-1 2.5s1 2 1.2 2.2c.2.2 1.6 2.6 4.3 3.6 1.5.5 2.1.4 2.7.3.6-.1 1.8-.7 2-1.4.2-.7.2-1.2.1-1.3-.1-.1-.4-.2-.8-.5-.4-.2-2.4-1.2-2.8-1.3-.4-.1-.7-.1-1 .3-.3.4-1 1.1-1.2 1.3-.2.2-.4.2-.8 0-.4-.2-1.8-.8-2.8-1.9-.8-.9-1.3-1.9-1.5-2.3-.2-.4 0-.7.2-.8.1-.1.3-.3.5-.5.2-.2.2-.4.4-.5.2-.2.1-.5 0-.6z" fill="white"/></svg></button>
+            <button class="icon-btn" title="Email" onclick="openContact()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="2" stroke="white" stroke-width="1.3"/><polyline points="2,7 12,14 22,7" stroke="white" stroke-width="1.3"/></svg></button>
+          </div>
+          <div class="contact-info"><p>info@ese-instruments.com</p><p>+49 89 123 456 00</p></div>
+        </div>
+      </div>
+      <div class="hdr-rule"></div>
+    </header>
+    <nav>
+      <div class="nav-inner">
+        <button class="nav-item active" onclick="showHome()">Products</button>
+        <button class="nav-item">Solutions</button>
+        <button class="nav-item">Technology</button>
+        <button class="nav-item" onclick="openContact()">Contact Us</button>
+        <div class="nav-spacer"></div>
+        <button class="nav-cta" onclick="openRQ('General Inquiry')">Request Quote</button>
+      </div>
+    </nav>
+  </div>
+
+  <div class="page">
+    <section class="hero">
+      <div class="scale-ticks"><div class="vline"></div></div>
+      <div class="hero-inner">
+        <div>
+          <p class="eyebrow">Industrial Sensing Division</p>
+          <h1>Engineered for<br/><em>Extreme</em> Precision</h1>
+          <p class="hero-p">ESE Instruments designs and manufactures high-performance sensors and transducers for critical industrial processes — from cryogenic research to high-pressure hydraulics.</p>
+          <div class="hero-actions">
+            <button class="btn-primary" onclick="showCatalog()">Explore Products</button>
+            <button class="btn-ghost" onclick="openDS('ESE Product Catalogue')">Download Catalogue</button>
+          </div>
+        </div>
+        <div class="specs-card">
+          <div class="specs-card-hdr"><p>Instrument Specifications</p></div>
+          <div class="spec-row"><span class="spec-label">Temperature Range</span><span class="spec-val">−200 to +1820<span class="spec-unit">°C</span></span></div>
+          <div class="spec-row"><span class="spec-label">Pressure Range</span><span class="spec-val">0 – 600<span class="spec-unit">bar</span></span></div>
+          <div class="spec-row"><span class="spec-label">Flow Accuracy</span><span class="spec-val">±0.1<span class="spec-unit">% rdg</span></span></div>
+          <div class="spec-row"><span class="spec-label">Signal Output</span><span class="spec-val">4–20 mA / HART</span></div>
+          <div class="spec-row"><span class="spec-label">Ingress Protection</span><span class="spec-val">IP67 / IP68</span></div>
+          <div class="spec-row"><span class="spec-label">Certifications</span><span class="spec-val">ATEX · CE · UL</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="product-strip">
+      <div class="strip-grid">
+        <button class="prod-card">
+          <div class="prod-icon">TH</div>
+          <div><h3>Thermocouples &amp; RTDs</h3><p>Range: −200 °C to +1820 °C · Accuracy: ±0.1 °C to ±1.5 °C</p>
+          <span class="view-series">View Series <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#2a6fa8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
+        </button>
+        <button class="prod-card">
+          <div class="prod-icon">PT</div>
+          <div><h3>Pressure Transducers</h3><p>Range: 0–600 bar · Accuracy: ±0.1 % FS · Output: 4–20 mA / HART</p>
+          <span class="view-series">View Series <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#2a6fa8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
+        </button>
+        <button class="prod-card" onclick="showCatalog()">
+          <div class="prod-icon">MF</div>
+          <div><h3>Mass Flow Meters</h3><p>Pipe Size: DN6 to DN2000 · Accuracy: ±0.1 % of reading</p>
+          <span class="view-series" style="color:#c0392b;font-weight:700;">View Catalog →</span></div>
+        </button>
+      </div>
+    </div>
+
+    <div class="trust-bar">
+      <div class="trust-inner">
+        <div class="trust-item"><span class="trust-icon">🛡</span><div><p class="trust-label">ISO 9001:2015</p><p class="trust-sub">Quality Certified</p></div></div>
+        <div class="trust-item"><span class="trust-icon">⚡</span><div><p class="trust-label">&lt; 3-Day Lead</p><p class="trust-sub">Standard Products</p></div></div>
+        <div class="trust-item"><span class="trust-icon">🏆</span><div><p class="trust-label">25+ Years</p><p class="trust-sub">Industry Experience</p></div></div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-logo">
+          <svg width="34" height="34" viewBox="-17 -17 34 34"><circle cx="0" cy="0" r="14" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><circle cx="0" cy="0" r="9" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.6" stroke-dasharray="2 2.5"/><line x1="-17" y1="0" x2="-11" y2="0" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/><line x1="11" y1="0" x2="17" y2="0" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/><line x1="0" y1="-17" x2="0" y2="-11" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/><line x1="0" y1="11" x2="0" y2="17" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/><line x1="0" y1="0" x2="7" y2="-7" stroke="#c0392b" stroke-width="1.5" stroke-linecap="round" opacity=".85"/><circle cx="0" cy="0" r="2" fill="rgba(255,255,255,0.3)"/></svg>
+          <div><p class="footer-ese">ESE</p><span class="footer-inst">INSTRUMENTS</span></div>
+        </div>
+        <div class="footer-vr"></div>
+        <div class="footer-contact-group">
+          <div class="fcg-item"><span>Headquarters</span><p>Messgerätstrasse 14, 81379 Munich, DE</p></div>
+          <div class="fcg-item"><span>Email</span><p>info@ese-instruments.com</p></div>
+          <div class="fcg-item"><span>Phone</span><p>+49 89 123 456 00</p></div>
+        </div>
+        <div class="footer-social">
+          <button class="footer-icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="2" y="9" width="4" height="13" fill="white" opacity=".6"/><circle cx="4" cy="5" r="2.2" fill="white" opacity=".6"/><path d="M10 9h4v1.8c.5-1 1.8-2 3.5-2C20.8 8.8 22 10.7 22 13.5V22h-4v-6c0-1.4-.4-2.4-1.7-2.4-1.3 0-2.3 1.1-2.3 2.6V22h-4z" fill="white" opacity=".6"/></svg></button>
+          <button class="footer-icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.11-1.34A9.95 9.95 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z" stroke="white" stroke-width="1.3" opacity=".6"/></svg></button>
+          <button class="footer-icon-btn" onclick="openContact()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="2" stroke="white" stroke-width="1.3" opacity=".6"/><polyline points="2,7 12,14 22,7" stroke="white" stroke-width="1.3" opacity=".6"/></svg></button>
+        </div>
+      </div>
+      <hr class="footer-rule"/>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 ESE Instruments GmbH. All rights reserved.</span>
+        <div class="footer-certs"><span class="footer-cert">ISO 9001</span><span class="footer-cert">EN 61326</span><span class="footer-cert">ATEX</span><span class="footer-cert">CE</span></div>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<!-- ═══ CATALOG PAGE ═══ -->
+<div id="catalog-page">
+  <div class="sticky-shell">
+    <div class="cat-header">
+      <div class="cat-hdr-inner">
+        <button class="cat-logo" onclick="showHome()">
+          <svg width="52" height="52" viewBox="-33 -33 66 66">
+            <circle cx="0" cy="0" r="28" fill="none" stroke="#1a3a5c" stroke-width="1.6"/>
+            <circle cx="0" cy="0" r="19" fill="none" stroke="#1a3a5c" stroke-width="0.7" stroke-dasharray="2.5 3" opacity=".45"/>
+            <line x1="-33" y1="0" x2="-22" y2="0" stroke="#1a3a5c" stroke-width="1.8"/>
+            <line x1="22" y1="0" x2="33" y2="0" stroke="#1a3a5c" stroke-width="1.8"/>
+            <line x1="0" y1="-33" x2="0" y2="-22" stroke="#1a3a5c" stroke-width="1.8"/>
+            <line x1="0" y1="22" x2="0" y2="33" stroke="#1a3a5c" stroke-width="1.8"/>
+            <line x1="0" y1="0" x2="13" y2="-13" stroke="#c0392b" stroke-width="2.2" stroke-linecap="round"/>
+            <circle cx="0" cy="0" r="3.5" fill="#1a3a5c"/><circle cx="0" cy="0" r="1.5" fill="#fafafa"/>
+            <circle cx="13" cy="-13" r="2" fill="#c0392b"/>
+          </svg>
+          <div><p class="cat-ese">ESE</p><span class="cat-inst">INSTRUMENTS</span></div>
+        </button>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="text-align:right;"><p style="font-size:11px;color:#6b7f90;margin:0;">Mass Flow Meter Catalog</p><p style="font-size:10px;color:#9aacba;margin:2px 0 0;">MKP Series · 8 Product Lines</p></div>
+          <button class="back-btn" onclick="showHome()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back to Home
+          </button>
+        </div>
+      </div>
+      <div class="cat-hdr-rule"></div>
+    </div>
+    <div class="cat-nav">
+      <div class="cat-nav-inner">
+        <button class="nav-item" onclick="showHome()">Products</button>
+        <button class="nav-item active" style="color:white;position:relative;">Mass Flow Meters<span style="position:absolute;bottom:0;left:18px;right:18px;height:2px;background:#2a9fd6;border-radius:2px 2px 0 0;"></span></button>
+        <button class="nav-item">Technology</button>
+        <button class="nav-item" onclick="openContact()">Contact Us</button>
+        <div class="nav-spacer"></div>
+        <button class="nav-cta" onclick="openRQ('General Inquiry')">Request Quote</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="cat-hero">
+      <img src="https://raw.githubusercontent.com/Pukiiee/mkp-images/main/MKP%20All%20MF%20.png" alt="MKP Mass Flow Meters" class="cat-hero-img"
+        onerror="this.style.display='none';document.getElementById('hero-fallback').style.display='flex'"/>
+      <div id="hero-fallback" class="cat-hero-placeholder" style="display:none;">
+        <div style="position:relative;z-index:1;">
+          <p style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2a9fd6;margin-bottom:12px;display:flex;align-items:center;gap:10px;"><span style="display:inline-block;width:20px;height:1.5px;background:#2a9fd6;"></span>MKP Instruments</p>
+          <h2 style="font-size:38px;font-weight:700;color:white;line-height:1.15;letter-spacing:-.5px;margin-bottom:10px;">Mass Flow <span style="font-weight:300;color:#2a9fd6;">Meter Series</span></h2>
+          <p style="font-size:14px;font-weight:300;color:rgba(255,255,255,.6);line-height:1.7;max-width:440px;">From ultra-compact thermal controllers to high-flow Coriolis solutions.</p>
+          <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+            <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,.6);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);padding:5px 12px;border-radius:2px;">Thermal MFC</span>
+            <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,.6);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);padding:5px 12px;border-radius:2px;">Coriolis</span>
+            <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,.6);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);padding:5px 12px;border-radius:2px;">Pressure Control</span>
+            <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,.6);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);padding:5px 12px;border-radius:2px;">Multi-Gas</span>
+          </div>
+        </div>
+      </div>
+      <div class="cat-hero-overlay" id="hero-overlay"></div>
+      <div class="cat-hero-text" id="hero-text">
+        <p class="cat-hero-eyebrow">MKP Instruments</p>
+        <h2>Mass Flow <em>Meter Series</em></h2>
+        <p>From ultra-compact thermal controllers to high-flow Coriolis solutions — the complete MKP range for semiconductor, industrial, and research applications.</p>
+      </div>
+    </div>
+
+    <div class="cat-content">
+      <div class="cat-toolbar">
+        <div class="cat-toolbar-left">
+          <h3>MKP Mass Flow Controller &amp; Meter Series</h3>
+          <p>8 product lines · Thermal, Coriolis, and Pressure-based solutions</p>
+        </div>
+        <div class="toolbar-right">
+          <div class="search-wrap">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9aacba" stroke-width="2.2" stroke-linecap="round" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="search-input" placeholder="Search products…" oninput="applyFilters()"/>
+            <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+          </div>
+          <div class="view-toggle">
+            <button class="active" id="grid-btn" onclick="setView('grid')">Grid</button>
+            <button id="list-btn" onclick="setView('list')">List</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-pill active" onclick="setFilter('all',this)">All</button>
+        <button class="filter-pill" onclick="setFilter('Thermal MFC',this)">Thermal MFC</button>
+        <button class="filter-pill" onclick="setFilter('High-Temp MFC',this)">High-Temp</button>
+        <button class="filter-pill" onclick="setFilter('Corrosive Gas MFC',this)">Corrosive Gas</button>
+        <button class="filter-pill" onclick="setFilter('Pressure Controller',this)">Pressure</button>
+        <button class="filter-pill" onclick="setFilter('Multi-Channel MFC',this)">Multi-Channel</button>
+        <button class="filter-pill" onclick="setFilter('High-Flow MFC',this)">High-Flow</button>
+        <button class="filter-pill" onclick="setFilter('Digital Controller',this)">Digital Controller</button>
+      </div>
+
+      <p class="result-count" id="result-count"><span id="visible-count">8</span> of 8 products</p>
+      <div class="prod-grid" id="prod-grid"></div>
+      <div class="no-results" id="no-results" style="display:none;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9aacba" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <p>No products found</p><span>Try a different search or filter</span>
+      </div>
+
+      <div class="cat-cta">
+        <div><h4>Need a custom gas or flow range?</h4><p>Our application engineers can configure any MKP instrument to your exact gas species, pressure, and flow requirements.</p></div>
+        <button class="cat-cta-btn" onclick="openContact()">Contact Engineering</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DATASHEET MODAL ═══ -->
+<div class="modal-overlay" id="ds-modal" style="display:none;" onclick="closeModal('ds-modal')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <div class="modal-hdr-text"><p>Technical Datasheet</p><h3 id="ds-name">—</h3><span>PDF · Latest Revision</span></div>
+      <button class="modal-close" onclick="closeModal('ds-modal')">✕</button>
+    </div>
+    <div id="ds-body" class="modal-body">
+      <p>Enter your work email to receive the full technical datasheet, dimensional drawings, and compliance certificates.</p>
+      <div class="field"><label>Work Email *</label><input type="email" placeholder="you@company.com" id="ds-email"/><p class="field-err" id="ds-email-err">Please enter a valid email address.</p></div>
+      <div class="field-row">
+        <div class="field"><label>First Name</label><input type="text" placeholder="Jane" id="ds-fname"/></div>
+        <div class="field"><label>Company</label><input type="text" placeholder="Company name" id="ds-company"/></div>
+      </div>
+      <button class="modal-submit" onclick="submitDS()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Datasheet
+      </button>
+    </div>
+    <div id="ds-success" class="modal-success" style="display:none;">
+      <div class="success-icon">✓</div><h4>Download Started</h4>
+      <p id="ds-success-msg">Your datasheet is downloading.</p>
+      <button onclick="closeModal('ds-modal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ QUOTE MODAL ═══ -->
+<div class="modal-overlay" id="rq-modal" style="display:none;" onclick="closeModal('rq-modal')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-hdr" style="background:#c0392b;">
+      <div class="modal-hdr-text"><p>Request a Quote</p><h3 id="rq-name">—</h3><span>Response within 1 business day</span></div>
+      <button class="modal-close" onclick="closeModal('rq-modal')">✕</button>
+    </div>
+    <div id="rq-body" class="modal-body">
+      <div class="field-row">
+        <div class="field"><label>Full Name *</label><input type="text" placeholder="Jane Smith" id="rq-name-input"/><p class="field-err" id="rq-name-err">Name is required.</p></div>
+        <div class="field"><label>Work Email *</label><input type="email" placeholder="jane@company.com" id="rq-email"/><p class="field-err" id="rq-email-err">Valid email required.</p></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Company</label><input type="text" placeholder="Company" id="rq-company"/></div>
+        <div class="field"><label>Quantity</label><input type="text" placeholder="e.g. 5 units" id="rq-qty"/></div>
+      </div>
+      <div class="field"><label>Application / Message</label><textarea placeholder="Gas species, flow range, process conditions…" id="rq-msg"></textarea></div>
+      <button class="modal-submit" style="background:#c0392b;" onmouseover="this.style.background='#a93226'" onmouseout="this.style.background='#c0392b'" onclick="submitRQ()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Submit Request
+      </button>
+    </div>
+    <div id="rq-success" class="modal-success" style="display:none;">
+      <div class="success-icon" style="background:#fde8e8;color:#c0392b;">✓</div>
+      <h4>Quote Request Sent!</h4><p>Our sales team will reach out within 1 business day with a tailored quotation.</p>
+      <button onclick="closeModal('rq-modal')" style="background:#c0392b;">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTACT MODAL ═══ -->
+<div class="modal-overlay" id="contact-modal" style="display:none;" onclick="closeModal('contact-modal')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-hdr" style="background:var(--dark);">
+      <div class="modal-hdr-text"><p>Get in Touch</p><h3>Contact ESE Instruments</h3><span>Munich, Germany · Response within 24 hours</span></div>
+      <button class="modal-close" onclick="closeModal('contact-modal')">✕</button>
+    </div>
+    <div id="contact-body" class="modal-body">
+      <div class="field-row">
+        <div class="field"><label>Full Name *</label><input type="text" placeholder="Jane Smith" id="ct-name"/><p class="field-err" id="ct-name-err">Name is required.</p></div>
+        <div class="field"><label>Email *</label><input type="email" placeholder="jane@company.com" id="ct-email"/><p class="field-err" id="ct-email-err">Valid email required.</p></div>
+      </div>
+      <div class="field"><label>Subject</label><input type="text" placeholder="How can we help?" id="ct-subject"/></div>
+      <div class="field"><label>Message *</label><textarea placeholder="Tell us about your application or enquiry…" id="ct-msg" style="height:100px;"></textarea><p class="field-err" id="ct-msg-err">Message is required.</p></div>
+      <button class="modal-submit" style="background:var(--dark);" onmouseover="this.style.background='#1a3a5c'" onmouseout="this.style.background='var(--dark)'" onclick="submitContact()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Send Message
+      </button>
+    </div>
+    <div id="contact-success" class="modal-success" style="display:none;">
+      <div class="success-icon">✓</div><h4>Message Sent!</h4>
+      <p>Thank you for reaching out. We'll be in touch within 1 business day.</p>
+      <button onclick="closeModal('contact-modal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const products=[
+  {tag:'Thermal MFC',name:'MARU 9000 High-Precision Series',desc:'Ultra-high-precision thermal mass flow controller for demanding semiconductor and research processes. Available in grey, white, and brushed-metal finishes.',img:'https://raw.githubusercontent.com/Pukiiee/mkp-images/main/MARU%20.png',specs:[{k:'Range',v:'10 sccm – 50 slm'},{k:'Accuracy',v:'±0.5% FS'},{k:'Output',v:'0–5V / RS-485'}],color:'#1a3a5c'},
+  {tag:'Thermal MFC',name:'MARU 5000 Ultra-Precision Controller',desc:'Ultra-precision mass flow controller with sub-1% accuracy, designed for process repeatability in ALD, CVD, and etching systems.',img:'https://raw.githubusercontent.com/Pukiiee/mkp-images/main/MARU%203000.png',specs:[{k:'Range',v:'1 sccm – 20 slm'},{k:'Accuracy',v:'±0.8% FS'},{k:'Output',v:'Analog / DeviceNet'}],color:'#2a6fa8'},
+  {tag:'High-Temp MFC',name:'MARU 8000HT High-Temperature Series',desc:'High-temperature mass flow controller with integrated MKP MARU 8000 digital controller. Suitable for aggressive media and elevated process temperatures.',img:'https://raw.githubusercontent.com/Pukiiee/mkp-images/main/MARU%208000.png',specs:[{k:'Range',v:'5 sccm – 30 slm'},{k:'Temp.',v:'Up to +200°C'},{k:'Output',v:'EtherCAT / RS-485'}],color:'#0d1f2d'},
+  {tag:'Corrosive Gas MFC',name:'ARI 7000 Corrosive-Gas Series',desc:'Specialist mass flow controller for corrosive and highly toxic gases. The distinctive pink anodized aluminium body signals corrosive-service certification.',img:'https://raw.githubusercontent.com/Pukiiee/mkp-images/main/ARI.png',specs:[{k:'Range',v:'1 sccm – 10 slm'},{k:'Media',v:'Cl₂, HCl, HF, NF₃'},{k:'Output',v:'0–5V / 4–20mA'}],color:'#c97bb0'},
+  {tag:'Pressure Controller',name:'BARON 3000 Pressure Controller Series',desc:'Multi-application absolute and differential pressure controller in rugged red anodised aluminium. Designed for semiconductor process chambers and vacuum systems.',img:'https://raw.githubusercontent.com/Pukiiee/mkp-images/main/BARON.png',specs:[{k:'Range',v:'0.1 – 1000 Torr'},{k:'Accuracy',v:'±0.25% FS'},{k:'Output',v:'RS-232 / 0–10V'}],color:'#c0392b'},
+  {tag:'Multi-Channel MFC',name:'MADEE Series Multi-Channel Controller',desc:'Integrated multi-channel EtherCAT mass flow controller. Allows up to 4 channels in a single compact yellow housing, minimising footprint in gas delivery systems.',img:'https://raw.githubusercontent.com/Pukiiee/mkp-images/main/MADE.png',specs:[{k:'Channels',v:'1 – 4 CH'},{k:'Range',v:'10 sccm – 30 slm'},{k:'Bus',v:'EtherCAT'}],color:'#d4a800'},
+  {tag:'High-Flow MFC',name:'MARU 3040 High-Flow Coriolis Series',desc:'Large-bore Coriolis mass flow controller for high-flow industrial gas applications. Stainless steel body with large-diameter VCR or flange fittings. Direct mass measurement.',img:'',specs:[{k:'Range',v:'10 slm – 1000 slm'},{k:'Accuracy',v:'±0.2% rdg'},{k:'Fitting',v:'VCR / Flange'}],color:'#3a6a3a'},
+  {tag:'Digital Controller',name:'MARU 8000 Digital Gateway Controller',desc:'Standalone digital gateway controller for MARU series flow controllers. Provides EtherCAT, PROFIBUS, and RS-485 connectivity plus a local OLED display.',img:'',specs:[{k:'Channels',v:'Up to 8 CH'},{k:'Bus',v:'EtherCAT / PROFIBUS'},{k:'Display',v:'OLED + USB'}],color:'#1a5ca8'},
+];
+
+(function(){
+  const r=document.getElementById('ruler');
+  for(let i=1;i<=32;i++){const s=document.createElement('span');s.style.left=(i*3.1)+'%';s.style.height=i%3===0?'7px':'4px';r.appendChild(s);}
+})();
+
+function placeholder(label,color){
+  const lines=label.split('\n');
+  const svg=lines.map((l,i)=>`<text x="50%" y="${50+(i-(lines.length-1)/2)*18}" text-anchor="middle" font-size="13" font-weight="700" font-family="Helvetica Neue,sans-serif" fill="${color}" opacity="0.5">${l}</text>`).join('');
+  return`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><svg width="180" height="120" viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg"><rect width="180" height="120" rx="4" fill="${color}" opacity="0.06"/><rect x="1" y="1" width="178" height="118" rx="3" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.15" stroke-dasharray="5 4"/><rect x="20" y="28" width="140" height="64" rx="6" fill="${color}" opacity="0.08"/><rect x="30" y="38" width="50" height="8" rx="2" fill="${color}" opacity="0.15"/><rect x="110" y="38" width="40" height="40" rx="4" fill="${color}" opacity="0.12"/>${svg}</svg></div>`;
+}
+
+function renderCards(){
+  document.getElementById('prod-grid').innerHTML=products.map(p=>`
+    <div class="mkp-card" data-tag="${p.tag}" data-name="${p.name.toLowerCase()}">
+      <div class="card-img-wrap">${p.img?`<img src="${p.img}" alt="${p.name}" onerror="this.parentNode.innerHTML=placeholder('${p.name.split(' ').slice(0,2).join(' ')}','${p.color}')"/>`:placeholder(p.name.split(' ').slice(0,2).join('\n'),p.color)}</div>
+      <div class="card-body">
+        <span class="card-series-tag">${p.tag}</span>
+        <p class="card-name">${p.name}</p>
+        <p class="card-desc">${p.desc}</p>
+        <div class="card-spec-row">${p.specs.map(s=>`<div class="card-spec-item"><span class="card-spec-key">${s.k}</span><span class="card-spec-val">${s.v}</span></div>`).join('')}</div>
+        <div class="card-actions">
+          <button class="btn-ds" onclick="openDS('${p.name}')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Datasheet</button>
+          <button class="btn-rq" onclick="openRQ('${p.name}')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 14.66V20a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2h5.34"/><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"/></svg>Request Quote</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+renderCards();
+
+let activeFilter='all';
+function setFilter(f,el){
+  activeFilter=f;
+  document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  applyFilters();
+}
+function applyFilters(){
+  const q=document.getElementById('search-input').value.toLowerCase().trim();
+  document.getElementById('search-clear').style.display=q?'block':'none';
+  let visible=0;
+  document.querySelectorAll('.mkp-card').forEach(c=>{
+    const show=(activeFilter==='all'||c.dataset.tag===activeFilter)&&(!q||c.dataset.name.includes(q)||c.dataset.tag.toLowerCase().includes(q));
+    c.classList.toggle('hidden',!show);
+    if(show) visible++;
+  });
+  document.getElementById('visible-count').textContent=visible;
+  document.getElementById('no-results').style.display=visible===0?'block':'none';
+}
+function clearSearch(){document.getElementById('search-input').value='';applyFilters();}
+
+function setView(v){
+  const grid=document.getElementById('prod-grid');
+  document.getElementById('grid-btn').classList.toggle('active',v==='grid');
+  document.getElementById('list-btn').classList.toggle('active',v==='list');
+  grid.classList.toggle('list-view',v==='list');
+}
+
+function showCatalog(){
+  document.getElementById('home-page').style.display='none';
+  document.getElementById('catalog-page').style.display='block';
+  clearSearch();setFilter('all',document.querySelector('.filter-pill'));
+  window.scrollTo(0,0);
+}
+function showHome(){
+  document.getElementById('catalog-page').style.display='none';
+  document.getElementById('home-page').style.display='block';
+  window.scrollTo(0,0);
+}
+
+(function(){
+  const img=document.querySelector('.cat-hero-img');
+  if(!img)return;
+  img.addEventListener('load',()=>{document.getElementById('hero-overlay').style.display='block';document.getElementById('hero-text').style.display='block';});
+  img.addEventListener('error',()=>{document.getElementById('hero-overlay').style.display='none';document.getElementById('hero-text').style.display='none';});
+})();
+
+function isEmail(v){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
+function setErr(inp,err,show){
+  const i=document.getElementById(inp),e=document.getElementById(err);
+  if(i)i.classList.toggle('error',show);
+  if(e)e.style.display=show?'block':'none';
+}
+
+function openDS(name){
+  document.getElementById('ds-name').textContent=name;
+  document.getElementById('ds-body').style.display='flex';
+  document.getElementById('ds-success').style.display='none';
+  ['ds-email','ds-fname','ds-company'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  setErr('ds-email','ds-email-err',false);
+  document.getElementById('ds-modal').style.display='flex';
+}
+function submitDS(){
+  if(!isEmail(document.getElementById('ds-email').value.trim())){setErr('ds-email','ds-email-err',true);return;}
+  setErr('ds-email','ds-email-err',false);
+  document.getElementById('ds-body').style.display='none';
+  document.getElementById('ds-success').style.display='flex';
+  document.getElementById('ds-success-msg').textContent='Your datasheet for '+document.getElementById('ds-name').textContent+' is downloading.';
+}
+
+function openRQ(name){
+  document.getElementById('rq-name').textContent=name;
+  document.getElementById('rq-body').style.display='flex';
+  document.getElementById('rq-success').style.display='none';
+  ['rq-name-input','rq-email','rq-company','rq-qty','rq-msg'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  setErr('rq-name-input','rq-name-err',false);setErr('rq-email','rq-email-err',false);
+  document.getElementById('rq-modal').style.display='flex';
+}
+function submitRQ(){
+  const n=document.getElementById('rq-name-input').value.trim(),e=document.getElementById('rq-email').value.trim();
+  let ok=true;
+  if(!n){setErr('rq-name-input','rq-name-err',true);ok=false;}else setErr('rq-name-input','rq-name-err',false);
+  if(!isEmail(e)){setErr('rq-email','rq-email-err',true);ok=false;}else setErr('rq-email','rq-email-err',false);
+  if(!ok)return;
+  document.getElementById('rq-body').style.display='none';
+  document.getElementById('rq-success').style.display='flex';
+}
+
+function openContact(){
+  document.getElementById('contact-body').style.display='flex';
+  document.getElementById('contact-success').style.display='none';
+  ['ct-name','ct-email','ct-subject','ct-msg'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['ct-name','ct-name-err','ct-email','ct-email-err','ct-msg','ct-msg-err'].forEach((_,i,a)=>{if(i%2===0)setErr(a[i],a[i+1],false);});
+  document.getElementById('contact-modal').style.display='flex';
+}
+function submitContact(){
+  const n=document.getElementById('ct-name').value.trim(),e=document.getElementById('ct-email').value.trim(),m=document.getElementById('ct-msg').value.trim();
+  let ok=true;
+  if(!n){setErr('ct-name','ct-name-err',true);ok=false;}else setErr('ct-name','ct-name-err',false);
+  if(!isEmail(e)){setErr('ct-email','ct-email-err',true);ok=false;}else setErr('ct-email','ct-email-err',false);
+  if(!m){setErr('ct-msg','ct-msg-err',true);ok=false;}else setErr('ct-msg','ct-msg-err',false);
+  if(!ok)return;
+  document.getElementById('contact-body').style.display='none';
+  document.getElementById('contact-success').style.display='flex';
+}
+
+function closeModal(id){document.getElementById(id).style.display='none';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')['ds-modal','rq-modal','contact-modal'].forEach(closeModal);});
+</script>
+</body>
+</html>
