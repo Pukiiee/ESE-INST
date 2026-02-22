@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ESE Instruments</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#1a3a5c;--cobalt:#2a6fa8;--blue2:#2a9fd6;
+  --red:#c0392b;--redh:#a93226;
+  --ice:#f0f4f8;--mist:#dde3e8;--bg:#fafafa;
+  --sub:#6b7f90;--light:#9aacba;--dark:#0d1f2d;
+}
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#e8ecef;min-height:100vh;}
+
+/* ── STICKY SHELL ── */
+.sticky-shell{position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(26,58,92,.18);}
+header{background:var(--bg);border-top:3px solid var(--navy);position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(26,58,92,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(26,58,92,.04) 1px,transparent 1px);
+  background-size:24px 24px;}
+.ruler{position:absolute;top:-3px;left:0;right:0;height:10px;pointer-events:none;overflow:hidden;}
+.ruler span{position:absolute;top:0;background:var(--bg);width:1px;}
+.header-inner{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:20px 40px;display:flex;align-items:center;}
+.logo-btn{display:flex;align-items:center;gap:16px;background:none;border:none;cursor:pointer;flex-shrink:0;padding:0;}
+.logo-text .ese{display:block;font-size:34px;font-weight:700;color:var(--navy);letter-spacing:-.5px;line-height:1;}
+.logo-text .inst{display:block;font-size:10px;font-weight:300;color:var(--navy);letter-spacing:7px;margin-top:4px;}
+.vr{width:1px;height:52px;background:var(--mist);margin:0 28px;flex-shrink:0;}
+.tagline{flex:1;}
+.tagline p{font-size:11px;color:var(--sub);letter-spacing:.3px;margin-bottom:7px;}
+.cert-pills{display:flex;gap:5px;flex-wrap:wrap;}
+.cert{font-size:8.5px;font-weight:600;color:var(--cobalt);border:1px solid var(--mist);padding:2px 6px;border-radius:2px;letter-spacing:.4px;}
+.hdr-right{display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex-shrink:0;}
+.social-row{display:flex;gap:6px;}
+.icon-btn{width:27px;height:27px;border-radius:4px;background:var(--navy);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;transition:background .15s;}
+.icon-btn:hover{background:var(--cobalt);}
+.contact-info p{font-size:10px;color:var(--light);text-align:right;margin:1px 0;}
+.hdr-rule{position:relative;z-index:1;height:1px;background:var(--mist);}
+
+/* ── NAV ── */
+nav{background:var(--navy);}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;align-items:center;}
+.nav-item{font-size:11.5px;font-weight:400;text-transform:uppercase;letter-spacing:.7px;padding:13px 20px;background:transparent;color:rgba(255,255,255,.55);border:none;cursor:pointer;font-family:inherit;transition:color .15s,background .15s;position:relative;}
+.nav-item:hover{color:#fff;background:rgba(255,255,255,.07);}
+.nav-item.active{color:#fff;}
+.nav-item.active::after{content:'';position:absolute;bottom:0;left:20px;right:20px;height:2px;background:var(--blue2);border-radius:2px 2px 0 0;}
+.nav-spacer{flex:1;}
+.nav-cta{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#fff;background:var(--red);border:none;padding:8px 16px;border-radius:2px;cursor:pointer;font-family:inherit;transition:background .15s;}
+.nav-cta:hover{background:var(--redh);}
+
+/* ── PAGE ANIM ── */
+.page{animation:fadeUp .3s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(110deg,#f0f4f8 0%,#e4eaf0 100%);border-bottom:1px solid var(--mist);position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;top:-60px;right:-60px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(26,58,92,.05) 0%,transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1200px;margin:0 auto;padding:60px 40px 56px;display:grid;grid-template-columns:1fr 300px;gap:60px;align-items:center;position:relative;z-index:1;}
+.eyebrow{display:flex;align-items:center;gap:10px;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cobalt);margin-bottom:14px;}
+.eyebrow::before{content:'';display:inline-block;width:22px;height:1.5px;background:var(--cobalt);}
+h1{font-size:44px;font-weight:700;color:var(--navy);line-height:1.13;letter-spacing:-.5px;margin-bottom:16px;}
+h1 em{font-style:normal;font-weight:300;color:var(--cobalt);}
+.hero-p{font-size:14px;font-weight:300;color:var(--sub);line-height:1.8;max-width:500px;margin-bottom:28px;}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.btn-primary{background:var(--navy);color:#fff;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:12px 26px;border:none;border-radius:2px;cursor:pointer;font-family:inherit;transition:background .15s;}
+.btn-primary:hover{background:var(--cobalt);}
+.btn-ghost{background:transparent;color:var(--navy);font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;padding:12px 22px;border:1.5px solid var(--navy);border-radius:2px;cursor:pointer;font-family:inherit;transition:all .15s;}
+.btn-ghost:hover{background:var(--navy);color:#fff;}
+.specs-card{background:#fff;border:1px solid var(--mist);border-radius:3px;box-shadow:0 8px 32px rgba(26,58,92,.08);overflow:hidden;}
+.specs-card-hdr{padding:18px 22px 14px;border-bottom:1px solid var(--ice);}
+.specs-card-hdr p{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--light);margin:0;}
+.spec-row{display:flex;justify-content:space-between;align-items:center;padding:9px 22px;border-top:1px solid #f5f7f9;}
+.spec-label{font-size:10px;color:var(--light);}
+.spec-val{font-size:12.5px;font-weight:700;color:var(--navy);letter-spacing:-.2px;}
+.spec-unit{font-size:9.5px;font-weight:400;color:var(--sub);margin-left:2px;}
+
+/* ── TRUST ── */
+.trust-bar{background:#f8fafc;border-bottom:1px solid var(--mist);padding:16px 0;}
+.trust-inner{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;gap:28px;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:9px;}
+.trust-icon{font-size:17px;}
+.trust-label{font-size:12px;font-weight:700;color:var(--navy);}
+.trust-sub{font-size:11px;color:var(--light);}
+
+/* ── FOOTER ── */
+footer{background:var(--navy);position:relative;overflow:hidden;}
+footer::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;}
+.footer-inner{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:32px 40px 22px;display:flex;align-items:center;gap:32px;flex-wrap:wrap;}
+.footer-logo{display:flex;align-items:center;gap:11px;flex-shrink:0;}
+.footer-ese{font-size:20px;font-weight:700;color:#fff;letter-spacing:-.3px;}
+.footer-inst{font-size:8px;font-weight:300;color:rgba(255,255,255,.3);letter-spacing:5px;display:block;margin-top:2px;}
+.footer-vr{width:1px;height:38px;background:rgba(255,255,255,.12);flex-shrink:0;}
+.footer-contact-group{flex:1;display:flex;gap:32px;flex-wrap:wrap;}
+.fcg-item span{font-size:9px;font-weight:700;color:rgba(255,255,255,.28);letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:3px;}
+.fcg-item p{font-size:11.5px;color:rgba(255,255,255,.62);font-weight:300;margin:0;}
+.footer-social{display:flex;gap:6px;}
+.footer-icon-btn{width:25px;height:25px;border-radius:4px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s;}
+.footer-icon-btn:hover{background:rgba(255,255,255,.18);}
+.footer-rule{position:relative;z-index:1;max-width:1200px;margin:0 auto;border:none;border-top:1px solid rgba(255,255,255,.08);}
+.footer-bottom{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:12px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.footer-copy{font-size:10px;color:rgba(255,255,255,.2);}
+.footer-certs{display:flex;gap:5px;}
+.footer-cert{font-size:8.5px;font-weight:600;color:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.1);padding:2px 6px;border-radius:2px;}
+
+/* ═══════════════════════════════════
+   SECTION PAGES (Level 1)
+═══════════════════════════════════ */
+.sec-page{display:none;min-height:100vh;background:#f0f3f6;}
+
+/* Section Hero Banner */
+.sec-hero{min-height:280px;display:flex;align-items:center;position:relative;overflow:hidden;}
+.sec-hero-inner{max-width:1200px;margin:0 auto;padding:0 60px;position:relative;z-index:1;width:100%;}
+.sec-hero-inner .eyebrow{margin-bottom:12px;}
+.sec-hero-inner h2{font-size:40px;font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.5px;margin-bottom:10px;}
+.sec-hero-inner h2 em{font-style:normal;font-weight:300;}
+.sec-hero-inner p{font-size:14px;font-weight:300;color:rgba(255,255,255,.65);line-height:1.75;max-width:500px;}
+.sec-hero-glow{position:absolute;right:-40px;top:-40px;width:400px;height:400px;border-radius:50%;pointer-events:none;}
+
+/* Breadcrumb */
+.breadcrumb{background:#fff;border-bottom:1px solid var(--mist);padding:10px 0;}
+.breadcrumb-inner{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.bc-item{font-size:11px;color:var(--light);cursor:pointer;transition:color .15s;}
+.bc-item:hover{color:var(--cobalt);}
+.bc-item.current{color:var(--navy);font-weight:600;cursor:default;}
+.bc-sep{font-size:11px;color:var(--mist);}
+
+/* Section content */
+.sec-content{max-width:1200px;margin:0 auto;padding:40px 40px 60px;}
+.sec-title{margin-bottom:32px;}
+.sec-title h3{font-size:22px;font-weight:700;color:var(--navy);}
+.sec-title p{font-size:13px;color:var(--light);margin-top:4px;}
+
+/* ── WINDOW CARDS (dark navy style) ── */
+.window-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
+.win-card{background:var(--dark);border:1px solid rgba(255,255,255,.06);border-radius:4px;
+  overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;
+  display:flex;flex-direction:column;position:relative;}
+.win-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.35);}
+.win-card-img{width:100%;height:180px;object-fit:cover;display:block;opacity:.85;transition:opacity .2s;}
+.win-card:hover .win-card-img{opacity:1;}
+.win-card-img-placeholder{width:100%;height:180px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.win-card-img-placeholder::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.03) 0%,transparent 60%);}
+.win-card-body{padding:20px;flex:1;display:flex;flex-direction:column;}
+.win-card-tag{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:2px 8px;border-radius:2px;border:1px solid;display:inline-block;align-self:flex-start;margin-bottom:10px;}
+.win-card-name{font-size:16px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:7px;}
+.win-card-desc{font-size:12px;color:rgba(255,255,255,.5);font-weight:300;line-height:1.65;flex:1;margin-bottom:16px;}
+.win-card-specs{display:flex;gap:12px;flex-wrap:wrap;padding:10px 12px;background:rgba(255,255,255,.04);border-radius:3px;margin-bottom:16px;border:1px solid rgba(255,255,255,.06);}
+.win-spec-item{display:flex;flex-direction:column;gap:2px;}
+.win-spec-key{font-size:8px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.8px;}
+.win-spec-val{font-size:11px;font-weight:600;color:rgba(255,255,255,.8);}
+.win-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
+.win-card-cta{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;padding:7px 14px;border-radius:2px;border:none;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:5px;}
+.win-card-arrow{font-size:11px;color:rgba(255,255,255,.25);transition:color .2s,transform .2s;}
+.win-card:hover .win-card-arrow{color:rgba(255,255,255,.6);transform:translateX(4px);}
+/* Deep dive badge */
+.deep-badge{position:absolute;top:12px;right:12px;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 8px;border-radius:2px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1);}
+
+/* ── PRODUCT CARDS (Level 3 — leaf nodes) ── */
+.prod-grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:20px;}
+.prod-card-3{background:#fff;border:1px solid var(--mist);border-radius:3px;box-shadow:0 2px 8px rgba(26,58,92,.06);overflow:hidden;transition:box-shadow .2s,transform .2s;display:flex;flex-direction:column;}
+.prod-card-3:hover{box-shadow:0 12px 36px rgba(26,58,92,.12);transform:translateY(-3px);}
+.prod-card-3 .card-img-wrap{background:var(--ice);border-bottom:1px solid var(--mist);height:200px;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden;}
+.prod-card-3 .card-img-wrap img{max-width:100%;max-height:100%;object-fit:contain;}
+.prod-card-3 .card-body{padding:20px;flex:1;display:flex;flex-direction:column;}
+.prod-card-3 .card-series-tag{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--cobalt);background:var(--ice);border:1px solid var(--mist);padding:2px 8px;border-radius:2px;margin-bottom:10px;align-self:flex-start;}
+.prod-card-3 .card-name{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.3;}
+.prod-card-3 .card-desc{font-size:12px;color:var(--sub);font-weight:300;line-height:1.65;flex:1;margin-bottom:14px;}
+.prod-card-3 .card-spec-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;padding:9px 11px;background:var(--ice);border-radius:2px;}
+.prod-card-3 .card-spec-item{display:flex;flex-direction:column;gap:2px;}
+.prod-card-3 .card-spec-key{font-size:8px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.8px;}
+.prod-card-3 .card-spec-val{font-size:11px;font-weight:600;color:var(--navy);}
+.prod-card-3 .card-actions{display:flex;gap:8px;margin-top:auto;}
+.btn-ds{flex:1;background:var(--navy);color:#fff;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;padding:8px 10px;border:none;border-radius:2px;cursor:pointer;font-family:inherit;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:5px;}
+.btn-ds:hover{background:var(--cobalt);}
+.btn-rq{flex:1;background:transparent;color:var(--red);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;padding:8px 10px;border:1.5px solid var(--red);border-radius:2px;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px;}
+.btn-rq:hover{background:var(--red);color:#fff;}
+
+/* ── SEC CTA ── */
+.sec-cta{background:var(--navy);border-radius:3px;padding:28px 32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:44px;}
+.sec-cta h4{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px;}
+.sec-cta p{font-size:13px;font-weight:300;color:rgba(255,255,255,.5);margin:0;}
+.sec-cta-btn{background:var(--red);color:#fff;font-weight:700;text-transform:uppercase;letter-spacing:.8px;font-size:12px;padding:12px 24px;border-radius:2px;border:none;cursor:pointer;font-family:inherit;transition:background .15s;flex-shrink:0;}
+.sec-cta-btn:hover{background:var(--redh);}
+
+/* ── MODALS ── */
+.modal-overlay{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);animation:fadeIn .18s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.modal-box{background:#fff;border-radius:3px;box-shadow:0 25px 60px rgba(0,0,0,.3);width:100%;max-width:420px;overflow:hidden;animation:slideUp .22s ease;}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.modal-hdr{padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start;}
+.modal-hdr-text p{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.5);margin:0 0 5px;}
+.modal-hdr-text h3{font-size:15px;font-weight:700;color:#fff;margin:0 0 3px;line-height:1.3;}
+.modal-hdr-text span{font-size:11px;color:rgba(255,255,255,.4);}
+.modal-close{background:none;border:none;color:rgba(255,255,255,.5);font-size:22px;cursor:pointer;line-height:1;padding:0;}
+.modal-close:hover{color:#fff;}
+.modal-body{padding:24px;display:flex;flex-direction:column;gap:14px;}
+.modal-body>p{font-size:13px;color:var(--sub);margin:0;}
+.field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--light);margin-bottom:5px;}
+.field input,.field textarea{width:100%;border:1.5px solid var(--mist);border-radius:2px;padding:9px 12px;font-size:13px;color:var(--navy);outline:none;font-family:inherit;transition:border-color .15s;box-sizing:border-box;}
+.field input:focus,.field textarea:focus{border-color:var(--cobalt);}
+.field input.error,.field textarea.error{border-color:var(--red);}
+.field-err{font-size:10px;color:var(--red);margin-top:3px;display:none;}
+.field textarea{resize:none;height:80px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.modal-submit{color:#fff;font-weight:700;font-size:13px;padding:12px;border-radius:2px;border:none;cursor:pointer;font-family:inherit;transition:filter .15s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.modal-submit:hover{filter:brightness(1.15);}
+.modal-success{padding:48px 32px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;}
+.success-icon{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;}
+.modal-success h4{font-size:18px;font-weight:800;color:var(--navy);margin:0;}
+.modal-success p{font-size:13px;color:var(--sub);max-width:240px;margin:0;}
+.modal-success button{margin-top:8px;color:#fff;font-weight:700;padding:10px 32px;border-radius:2px;border:none;cursor:pointer;font-size:13px;font-family:inherit;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HOME ═══════════════ -->
+<div id="page-home">
+  <div class="sticky-shell">
+    <header>
+      <div class="ruler" id="ruler"></div>
+      <div class="header-inner">
+        <button class="logo-btn" onclick="nav('home')">
+          <svg width="64" height="64" viewBox="-33 -33 66 66"><circle cx="0" cy="0" r="28" fill="none" stroke="#1a3a5c" stroke-width="1.6"/><circle cx="0" cy="0" r="19" fill="none" stroke="#1a3a5c" stroke-width="0.7" stroke-dasharray="2.5 3" opacity=".45"/><line x1="-33" y1="0" x2="-22" y2="0" stroke="#1a3a5c" stroke-width="1.8"/><line x1="22" y1="0" x2="33" y2="0" stroke="#1a3a5c" stroke-width="1.8"/><line x1="0" y1="-33" x2="0" y2="-22" stroke="#1a3a5c" stroke-width="1.8"/><line x1="0" y1="22" x2="0" y2="33" stroke="#1a3a5c" stroke-width="1.8"/><line x1="28" y1="0" x2="23" y2="0" stroke="#1a3a5c" stroke-width="1.2"/><line x1="-28" y1="0" x2="-23" y2="0" stroke="#1a3a5c" stroke-width="1.2"/><line x1="0" y1="-28" x2="0" y2="-23" stroke="#1a3a5c" stroke-width="1.2"/><line x1="0" y1="28" x2="0" y2="23" stroke="#1a3a5c" stroke-width="1.2"/><line x1="19.8" y1="-19.8" x2="17" y2="-17" stroke="#1a3a5c" stroke-width="0.9"/><line x1="19.8" y1="19.8" x2="17" y2="17" stroke="#1a3a5c" stroke-width="0.9"/><line x1="-19.8" y1="19.8" x2="-17" y2="17" stroke="#1a3a5c" stroke-width="0.9"/><line x1="-19.8" y1="-19.8" x2="-17" y2="-17" stroke="#1a3a5c" stroke-width="0.9"/><line x1="0" y1="0" x2="15" y2="-15" stroke="#c0392b" stroke-width="2.2" stroke-linecap="round"/><circle cx="0" cy="0" r="3.5" fill="#1a3a5c"/><circle cx="0" cy="0" r="1.5" fill="#fafafa"/><circle cx="15" cy="-15" r="2" fill="#c0392b"/></svg>
+          <div class="logo-text"><span class="ese">ESE</span><span class="inst">INSTRUMENTS</span></div>
+        </button>
+        <div class="vr"></div>
+        <div class="tagline">
+          <p>Precision Measurement &amp; Industrial Sensing</p>
+          <div class="cert-pills"><span class="cert">ISO 9001</span><span class="cert">EN 61326</span><span class="cert">ATEX</span><span class="cert">CE</span></div>
+        </div>
+        <div class="hdr-right">
+          <div class="social-row">
+            <button class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="2" y="9" width="4" height="13" fill="white"/><circle cx="4" cy="5" r="2.2" fill="white"/><path d="M10 9h4v1.8c.5-1 1.8-2 3.5-2C20.8 8.8 22 10.7 22 13.5V22h-4v-6c0-1.4-.4-2.4-1.7-2.4-1.3 0-2.3 1.1-2.3 2.6V22h-4z" fill="white"/></svg></button>
+            <button class="icon-btn" onclick="openContact()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="2" stroke="white" stroke-width="1.3"/><polyline points="2,7 12,14 22,7" stroke="white" stroke-width="1.3"/></svg></button>
+          </div>
+          <div class="contact-info"><p>info@ese-instruments.com</p><p>+49 89 123 456 00</p></div>
+        </div>
+      </div>
+      <div class="hdr-rule"></div>
+    </header>
+    <nav id="main-nav">
+      <div class="nav-inner">
+        <button class="nav-item active" id="nav-sensors" onclick="nav('sensors')">Sensors</button>
+        <button class="nav-item" id="nav-ceramics" onclick="nav('ceramics')">Ceramics</button>
+        <button class="nav-item" id="nav-heaters" onclick="nav('heaters')">Customised Heaters</button>
+        <button class="nav-item" id="nav-reactors" onclick="nav('reactors')">Reactors</button>
+        <div class="nav-spacer"></div>
+        <button class="nav-cta" onclick="openRQ('General Inquiry')">Request Quote</button>
+      </div>
+    </nav>
+  </div>
+
+  <div class="page">
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <p class="eyebrow">Industrial Sensing &amp; Process Solutions</p>
+          <h1>Engineered for<br/><em>Extreme</em> Precision</h1>
+          <p class="hero-p">ESE Instruments designs and manufactures high-performance sensors, advanced ceramics, customised heaters, and precision reactors for critical industrial processes worldwide.</p>
+          <div class="hero-actions">
+            <button class="btn-primary" onclick="nav('sensors')">Explore Products</button>
+            <button class="btn-ghost" onclick="openDS('ESE Product Catalogue')">Download Catalogue</button>
+          </div>
+        </div>
+        <div class="specs-card">
+          <div class="specs-card-hdr"><p>Instrument Specifications</p></div>
+          <div class="spec-row"><span class="spec-label">Temperature Range</span><span class="spec-val">−200 to +1820<span class="spec-unit">°C</span></span></div>
+          <div class="spec-row"><span class="spec-label">Pressure Range</span><span class="spec-val">0 – 1000<span class="spec-unit">bar</span></span></div>
+          <div class="spec-row"><span class="spec-label">Flow Accuracy</span><span class="spec-val">±0.1<span class="spec-unit">% rdg</span></span></div>
+          <div class="spec-row"><span class="spec-label">Signal Output</span><span class="spec-val">4–20 mA / HART</span></div>
+          <div class="spec-row"><span class="spec-label">Ingress Protection</span><span class="spec-val">IP67 / IP68</span></div>
+          <div class="spec-row"><span class="spec-label">Certifications</span><span class="spec-val">ATEX · CE · UL</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Home nav cards -->
+    <div style="background:#fff;border-bottom:1px solid var(--mist);">
+      <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);">
+        <button onclick="nav('sensors')" style="text-align:left;display:flex;align-items:flex-start;gap:16px;padding:28px;background:#fff;border:none;cursor:pointer;font-family:inherit;transition:background .15s;border-right:1px solid var(--mist);" onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='#fff'">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:10px;font-weight:800;">SEN</div>
+          <div><p style="font-size:13px;font-weight:700;color:var(--navy);margin:0 0 4px;">Sensors</p><p style="font-size:11px;color:var(--sub);font-weight:300;line-height:1.5;margin:0 0 8px;">Thermocouples, Pressure, Flow &amp; Level</p><span style="font-size:10px;font-weight:700;color:var(--red);">Explore →</span></div>
+        </button>
+        <button onclick="nav('ceramics')" style="text-align:left;display:flex;align-items:flex-start;gap:16px;padding:28px;background:#fff;border:none;cursor:pointer;font-family:inherit;transition:background .15s;border-right:1px solid var(--mist);" onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='#fff'">
+          <div style="width:38px;height:38px;border-radius:50%;background:#7c3aed;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:10px;font-weight:800;">CER</div>
+          <div><p style="font-size:13px;font-weight:700;color:var(--navy);margin:0 0 4px;">Ceramics</p><p style="font-size:11px;color:var(--sub);font-weight:300;line-height:1.5;margin:0 0 8px;">Quartz &amp; Alumina product ranges</p><span style="font-size:10px;font-weight:700;color:var(--red);">Explore →</span></div>
+        </button>
+        <button onclick="nav('heaters')" style="text-align:left;display:flex;align-items:flex-start;gap:16px;padding:28px;background:#fff;border:none;cursor:pointer;font-family:inherit;transition:background .15s;border-right:1px solid var(--mist);" onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='#fff'">
+          <div style="width:38px;height:38px;border-radius:50%;background:#c0392b;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:10px;font-weight:800;">HEA</div>
+          <div><p style="font-size:13px;font-weight:700;color:var(--navy);margin:0 0 4px;">Customised Heaters</p><p style="font-size:11px;color:var(--sub);font-weight:300;line-height:1.5;margin:0 0 8px;">Flanged, Circulation, Screw Plug &amp; more</p><span style="font-size:10px;font-weight:700;color:var(--red);">Explore →</span></div>
+        </button>
+        <button onclick="nav('reactors')" style="text-align:left;display:flex;align-items:flex-start;gap:16px;padding:28px;background:#fff;border:none;cursor:pointer;font-family:inherit;transition:background .15s;" onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='#fff'">
+          <div style="width:38px;height:38px;border-radius:50%;background:#059669;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:10px;font-weight:800;">REA</div>
+          <div><p style="font-size:13px;font-weight:700;color:var(--navy);margin:0 0 4px;">Reactors</p><p style="font-size:11px;color:var(--sub);font-weight:300;line-height:1.5;margin:0 0 8px;">Tubular, Batch, Fixed-Bed &amp; Micro Reactors</p><span style="font-size:10px;font-weight:700;color:var(--red);">Explore →</span></div>
+        </button>
+      </div>
+    </div>
+
+    <div class="trust-bar">
+      <div class="trust-inner">
+        <div class="trust-item"><span class="trust-icon">🛡</span><div><p class="trust-label">ISO 9001:2015</p><p class="trust-sub">Quality Certified</p></div></div>
+        <div class="trust-item"><span class="trust-icon">⚡</span><div><p class="trust-label">&lt; 3-Day Lead</p><p class="trust-sub">Standard Products</p></div></div>
+        <div class="trust-item"><span class="trust-icon">🏆</span><div><p class="trust-label">25+ Years</p><p class="trust-sub">Industry Experience</p></div></div>
+        <div class="trust-item"><span class="trust-icon">🌍</span><div><p class="trust-label">Global Distribution</p><p class="trust-sub">40+ Countries</p></div></div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-logo">
+          <svg width="32" height="32" viewBox="-17 -17 34 34"><circle cx="0" cy="0" r="14" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="-17" y1="0" x2="-11" y2="0" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/><line x1="11" y1="0" x2="17" y2="0" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/><line x1="0" y1="-17" x2="0" y2="-11" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/><line x1="0" y1="11" x2="0" y2="17" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/><line x1="0" y1="0" x2="7" y2="-7" stroke="#c0392b" stroke-width="1.5" stroke-linecap="round" opacity=".85"/><circle cx="0" cy="0" r="2" fill="rgba(255,255,255,0.3)"/></svg>
+          <div><p class="footer-ese">ESE</p><span class="footer-inst">INSTRUMENTS</span></div>
+        </div>
+        <div class="footer-vr"></div>
+        <div class="footer-contact-group">
+          <div class="fcg-item"><span>Headquarters</span><p>Messgerätstrasse 14, 81379 Munich, DE</p></div>
+          <div class="fcg-item"><span>Email</span><p>info@ese-instruments.com</p></div>
+          <div class="fcg-item"><span>Phone</span><p>+49 89 123 456 00</p></div>
+        </div>
+        <div class="footer-social">
+          <button class="footer-icon-btn" onclick="openContact()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="2" stroke="white" stroke-width="1.3" opacity=".6"/><polyline points="2,7 12,14 22,7" stroke="white" stroke-width="1.3" opacity=".6"/></svg></button>
+        </div>
+      </div>
+      <hr class="footer-rule"/>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 ESE Instruments GmbH. All rights reserved.</span>
+        <div class="footer-certs"><span class="footer-cert">ISO 9001</span><span class="footer-cert">EN 61326</span><span class="footer-cert">ATEX</span><span class="footer-cert">CE</span></div>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<!-- ═══════════════ SECTION PAGES ═══════════════ -->
+<div id="page-sensors" class="sec-page"></div>
+<div id="page-ceramics" class="sec-page"></div>
+<div id="page-heaters" class="sec-page"></div>
+<div id="page-reactors" class="sec-page"></div>
+<!-- Deep-dive pages -->
+<div id="page-deep" class="sec-page"></div>
+<!-- Product leaf page -->
+<div id="page-leaf" class="sec-page"></div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="ds-modal" style="display:none;" onclick="closeModal('ds-modal')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-hdr" style="background:var(--navy);"><div class="modal-hdr-text"><p>Technical Datasheet</p><h3 id="ds-name">—</h3><span>PDF · Latest Revision</span></div><button class="modal-close" onclick="closeModal('ds-modal')">✕</button></div>
+    <div id="ds-body" class="modal-body">
+      <p>Enter your work email to receive the full technical datasheet and compliance certificates.</p>
+      <div class="field"><label>Work Email *</label><input type="email" placeholder="you@company.com" id="ds-email"/><p class="field-err" id="ds-email-err">Please enter a valid email address.</p></div>
+      <div class="field-row"><div class="field"><label>First Name</label><input type="text" placeholder="Jane" id="ds-fname"/></div><div class="field"><label>Company</label><input type="text" placeholder="Company name" id="ds-company"/></div></div>
+      <button class="modal-submit" style="background:var(--navy);" onclick="submitDS()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download Datasheet</button>
+    </div>
+    <div id="ds-success" class="modal-success" style="display:none;"><div class="success-icon" style="background:#d1fae5;color:#059669;">✓</div><h4>Download Started</h4><p id="ds-success-msg">Downloading…</p><button style="background:var(--navy);" onclick="closeModal('ds-modal')">Close</button></div>
+  </div>
+</div>
+<div class="modal-overlay" id="rq-modal" style="display:none;" onclick="closeModal('rq-modal')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-hdr" style="background:var(--red);"><div class="modal-hdr-text"><p>Request a Quote</p><h3 id="rq-name">—</h3><span>Response within 1 business day</span></div><button class="modal-close" onclick="closeModal('rq-modal')">✕</button></div>
+    <div id="rq-body" class="modal-body">
+      <div class="field-row"><div class="field"><label>Full Name *</label><input type="text" placeholder="Jane Smith" id="rq-name-input"/><p class="field-err" id="rq-name-err">Required.</p></div><div class="field"><label>Work Email *</label><input type="email" placeholder="jane@company.com" id="rq-email"/><p class="field-err" id="rq-email-err">Valid email required.</p></div></div>
+      <div class="field-row"><div class="field"><label>Company</label><input type="text" placeholder="Company" id="rq-company"/></div><div class="field"><label>Quantity</label><input type="text" placeholder="e.g. 5 units" id="rq-qty"/></div></div>
+      <div class="field"><label>Application / Message</label><textarea placeholder="Describe your application…" id="rq-msg"></textarea></div>
+      <button class="modal-submit" style="background:var(--red);" onclick="submitRQ()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Submit Request</button>
+    </div>
+    <div id="rq-success" class="modal-success" style="display:none;"><div class="success-icon" style="background:#fde8e8;color:var(--red);">✓</div><h4>Quote Request Sent!</h4><p>Our team will respond within 1 business day.</p><button style="background:var(--red);" onclick="closeModal('rq-modal')">Close</button></div>
+  </div>
+</div>
+<div class="modal-overlay" id="contact-modal" style="display:none;" onclick="closeModal('contact-modal')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-hdr" style="background:var(--dark);"><div class="modal-hdr-text"><p>Get in Touch</p><h3>Contact ESE Instruments</h3><span>Munich · Response within 24 hours</span></div><button class="modal-close" onclick="closeModal('contact-modal')">✕</button></div>
+    <div id="contact-body" class="modal-body">
+      <div class="field-row"><div class="field"><label>Full Name *</label><input type="text" placeholder="Jane Smith" id="ct-name"/><p class="field-err" id="ct-name-err">Required.</p></div><div class="field"><label>Email *</label><input type="email" placeholder="jane@co.com" id="ct-email"/><p class="field-err" id="ct-email-err">Valid email required.</p></div></div>
+      <div class="field"><label>Subject</label><input type="text" placeholder="How can we help?" id="ct-subject"/></div>
+      <div class="field"><label>Message *</label><textarea placeholder="Your message…" id="ct-msg" style="height:90px;"></textarea><p class="field-err" id="ct-msg-err">Required.</p></div>
+      <button class="modal-submit" style="background:var(--dark);" onclick="submitContact()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Send Message</button>
+    </div>
+    <div id="contact-success" class="modal-success" style="display:none;"><div class="success-icon" style="background:#d1fae5;color:#059669;">✓</div><h4>Message Sent!</h4><p>We'll be in touch within 1 business day.</p><button style="background:var(--dark);" onclick="closeModal('contact-modal')">Close</button></div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   productData.js — Central data store
+═══════════════════════════════════════════ */
+const DATA = {
+  sensors: {
+    id:'sensors', label:'Sensors', accent:'#2a9fd6',
+    bg:'linear-gradient(135deg,#0d1f2d 0%,#1a3a5c 60%,#0d2a40 100%)',
+    glow:'rgba(42,159,214,.15)',
+    desc:'Complete range of industrial measurement sensors for temperature, pressure, flow, and level — engineered for accuracy in the most demanding process environments.',
+    cta:'Need a custom specification?', ctaDesc:'Our sensor engineers configure to your exact media, range, and output requirements.',
+    subcategories:[
+      {id:'sensors-th', label:'Thermocouples & RTDs', tag:'Temperature', accent:'#d97706',
+       desc:'Type K/J/S/R thermocouples and PT100/PT1000 RTDs from −200 °C to +1820 °C.',
+       specs:[{k:'Range',v:'−200 to +1820°C'},{k:'Accuracy',v:'±0.1–1.5°C'},{k:'Output',v:'mV / 4–20mA'}],
+       color:'#b45309', hasDeep:false,
+       products:[
+         {name:'TKS-K Industrial Thermocouple',tag:'Type K',desc:'Robust Type K assembly with DIN-B or Minox head, customisable insertion length.',img:'',specs:[{k:'Type',v:'K (NiCr/Ni)'},{k:'Range',v:'−200 to +1260°C'},{k:'Class',v:'1 / ±1.5°C'}],color:'#b45309'},
+         {name:'TKS-S/R Precious Metal',tag:'Type S/R',desc:'Platinum-rhodium for furnace and glass applications in high-purity alumina sheaths.',img:'',specs:[{k:'Type',v:'S/R Pt-Rh'},{k:'Range',v:'0 to +1760°C'},{k:'Class',v:'1 / ±1.5°C'}],color:'#92400e'},
+         {name:'TKS-R100 PT100 Assembly',tag:'RTD',desc:'4-wire PT100 in stainless protection tube for pharma, food, and chemical industries.',img:'',specs:[{k:'Element',v:'PT100/PT1000'},{k:'Range',v:'−200 to +600°C'},{k:'Class',v:'A / B / AA'}],color:'#0369a1'},
+         {name:'TKS-MI Mineral Insulated',tag:'MIMS',desc:'Metal-sheathed mineral insulated cable in 316SS, Inconel 600, or tantalum.',img:'',specs:[{k:'OD',v:'0.5–12 mm'},{k:'Types',v:'K/J/T/N/S'},{k:'Range',v:'−200 to +1260°C'}],color:'#1f2937'},
+       ]},
+      {id:'sensors-pt', label:'Pressure Transducers', tag:'Pressure', accent:'#059669',
+       desc:'Gauge, absolute, and differential pressure transmitters from 0 to 1000 bar with HART and fieldbus outputs.',
+       specs:[{k:'Range',v:'0–1000 bar'},{k:'Accuracy',v:'±0.04–0.25% FS'},{k:'Output',v:'4–20mA HART'}],
+       color:'#047857', hasDeep:false,
+       products:[
+         {name:'PSE-G100 General Purpose',tag:'Gauge',desc:'Ceramic sensing cell gauge transmitter for liquids, gases, and steam.',img:'',specs:[{k:'Range',v:'0–600 bar'},{k:'Accuracy',v:'±0.1% FS'},{k:'Output',v:'4–20mA HART'}],color:'#065f46'},
+         {name:'PSE-D300 Differential Cell',tag:'Differential',desc:'Smart DP transmitter for flow, level, and filter monitoring with HART/FF/PA.',img:'',specs:[{k:'Range',v:'0–10mbar–40bar'},{k:'Accuracy',v:'±0.04% FS'},{k:'Protocol',v:'HART/FF/PA'}],color:'#014737'},
+         {name:'PSE-HP500 High-Pressure',tag:'High Pressure',desc:'1000 bar rated transmitter for hydraulic test rigs and autoclaves.',img:'',specs:[{k:'Range',v:'0–1000 bar'},{k:'Accuracy',v:'±0.25% FS'},{k:'Conn.',v:'G½/UNF'}],color:'#1f2937'},
+         {name:'PSE-IS400 ATEX Transmitter',tag:'ATEX Zone 0',desc:'Intrinsically safe Zone 0 certified transmitter for hazardous area applications.',img:'',specs:[{k:'Range',v:'0–100 bar'},{k:'Zone',v:'Zone 0/Div.1'},{k:'Approval',v:'ATEX/IECEx'}],color:'#065f46'},
+       ]},
+      {id:'sensors-mf', label:'Mass Flow Meters', tag:'Flow', accent:'#2a9fd6',
+       desc:'Thermal, Coriolis, and pressure-based mass flow controllers for semiconductor, industrial, and research gas delivery.',
+       specs:[{k:'Range',v:'1 sccm–1000 slm'},{k:'Accuracy',v:'±0.2–0.8% FS'},{k:'Output',v:'Analog/EtherCAT'}],
+       color:'#1a3a5c', hasDeep:false,
+       products:[
+         {name:'MARU 9000 High-Precision',tag:'Thermal MFC',desc:'Ultra-high-precision thermal MFC for semiconductor and research processes.',img:'https://raw.githubusercontent.com/Pukiiee/mkp-images/main/MARU%20.png',specs:[{k:'Range',v:'10sccm–50slm'},{k:'Accuracy',v:'±0.5% FS'},{k:'Output',v:'0–5V/RS-485'}],color:'#1a3a5c'},
+         {name:'ARI 7000 Corrosive-Gas',tag:'Corrosive Gas',desc:'Pink anodised aluminium body for Cl₂, HCl, HF, NF₃ and other corrosive gases.',img:'https://raw.githubusercontent.com/Pukiiee/mkp-images/main/ARI.png',specs:[{k:'Range',v:'1sccm–10slm'},{k:'Media',v:'Cl₂,HCl,HF,NF₃'},{k:'Output',v:'0–5V/4–20mA'}],color:'#c97bb0'},
+         {name:'BARON 3000 Pressure Controller',tag:'Pressure Ctrl',desc:'Absolute and differential pressure controller for process chambers and vacuum.',img:'https://raw.githubusercontent.com/Pukiiee/mkp-images/main/BARON.png',specs:[{k:'Range',v:'0.1–1000 Torr'},{k:'Accuracy',v:'±0.25% FS'},{k:'Output',v:'RS-232/0–10V'}],color:'#c0392b'},
+         {name:'MADEE Multi-Channel',tag:'Multi-Channel',desc:'Up to 4-channel EtherCAT MFC in a single compact yellow housing.',img:'https://raw.githubusercontent.com/Pukiiee/mkp-images/main/MADE.png',specs:[{k:'Channels',v:'1–4 CH'},{k:'Range',v:'10sccm–30slm'},{k:'Bus',v:'EtherCAT'}],color:'#d4a800'},
+       ]},
+      {id:'sensors-lv', label:'Level Sensors', tag:'Level', accent:'#8b5cf6',
+       desc:'Ultrasonic, guided wave radar, and float-type level transmitters for tanks, vessels, and open channels.',
+       specs:[{k:'Range',v:'0–30 m'},{k:'Accuracy',v:'±1–3 mm'},{k:'Output',v:'4–20mA/HART'}],
+       color:'#6d28d9', hasDeep:false,
+       products:[
+         {name:'LVS-U200 Ultrasonic Sensor',tag:'Ultrasonic',desc:'Non-contact ultrasonic level transmitter for open tanks, channels, and solids.',img:'',specs:[{k:'Range',v:'0.3–10 m'},{k:'Accuracy',v:'±3 mm'},{k:'Output',v:'4–20mA HART'}],color:'#6d28d9'},
+         {name:'LVS-R300 Guided Wave Radar',tag:'GWR',desc:'Single and twin-rod GWR for liquids, slurries, and interface measurement.',img:'',specs:[{k:'Range',v:'0–30 m'},{k:'Accuracy',v:'±1 mm'},{k:'Protocol',v:'HART/PROFIBUS'}],color:'#5b21b6'},
+         {name:'LVS-F100 Float Switch',tag:'Float',desc:'Stainless float switch for high/low level alarm in corrosive media vessels.',img:'',specs:[{k:'Media',v:'Liquid'},{k:'Temp.',v:'Up to +150°C'},{k:'Output',v:'SPDT relay'}],color:'#4c1d95'},
+         {name:'LVS-C400 Capacitance Probe',tag:'Capacitance',desc:'Capacitance level probe for solids, powders, and viscous media in silos.',img:'',specs:[{k:'Range',v:'Up to 20 m'},{k:'Media',v:'Solid/Liquid'},{k:'Output',v:'4–20mA'}],color:'#6d28d9'},
+       ]},
+    ]
+  },
+
+  ceramics: {
+    id:'ceramics', label:'Ceramics', accent:'#7c3aed',
+    bg:'linear-gradient(135deg,#1a0a2e 0%,#2d1b69 60%,#1a0a2e 100%)',
+    glow:'rgba(124,58,237,.15)',
+    desc:'High-purity technical ceramics for laboratory, semiconductor, and high-temperature industrial applications. Quartz and alumina solutions engineered for dimensional precision.',
+    cta:'Need custom dimensions or tolerances?', ctaDesc:'Our ceramics team manufactures to drawing — any dimension, any quantity.',
+    subcategories:[
+      {id:'ceramics-quartz', label:'Quartz', tag:'SiO₂', accent:'#60a5fa',
+       desc:'High-purity fused silica quartz components for semiconductor, optical, and laboratory applications up to 1650 °C.',
+       specs:[{k:'Purity',v:'>99.99% SiO₂'},{k:'Max Temp.',v:'1650°C'},{k:'Trans.',v:'UV–IR'}],
+       color:'#1d4ed8', hasDeep:true,
+       deepItems:[
+         {name:'Quartz Tubes',tag:'Tubes',desc:'Transparent and opaque fused quartz tubes for furnace applications, CVD/ALD reactors, and optical systems. Custom OD/ID/length.',img:'',specs:[{k:'OD',v:'3–300 mm'},{k:'Purity',v:'>99.99%'},{k:'Temp.',v:'Up to 1650°C'}],color:'#1d4ed8'},
+         {name:'Quartz Crucibles',tag:'Crucibles',desc:'Single-use and reusable quartz crucibles for crystal growth, metal melting, and acid digestion. All sizes available.',img:'',specs:[{k:'Vol.',v:'5–5000 mL'},{k:'Wall',v:'1–5 mm'},{k:'Grade',v:'Optical/Lab'}],color:'#1e40af'},
+         {name:'Quartz Flanges & Fittings',tag:'Fittings',desc:'Precision-machined quartz flanges, connectors, and vacuum fittings for process chambers and reactor assemblies.',img:'',specs:[{k:'Type',v:'CF/KF/ISO'},{k:'Finish',v:'Fire-polished'},{k:'Purity',v:'>99.99%'}],color:'#1d4ed8'},
+         {name:'Quartz Wafer Carriers',tag:'Wafer Carriers',desc:'Slotted quartz boats and wafer carriers for semiconductor diffusion and oxidation furnaces.',img:'',specs:[{k:'Wafer',v:'2"–12"'},{k:'Slots',v:'25–50'},{k:'Temp.',v:'1200°C max'}],color:'#1e3a8a'},
+       ]},
+      {id:'ceramics-alumina', label:'Alumina', tag:'Al₂O₃', accent:'#f59e0b',
+       desc:'High-density aluminium oxide ceramics offering exceptional hardness, wear resistance, and chemical inertness for extreme industrial environments.',
+       specs:[{k:'Purity',v:'95–99.7% Al₂O₃'},{k:'Max Temp.',v:'1750°C'},{k:'Hardness',v:'HV 1800'}],
+       color:'#b45309', hasDeep:true,
+       deepItems:[
+         {name:'Alumina Tubes',tag:'Tubes',desc:'High-purity alumina protection tubes and thermocouple sheaths for temperatures up to 1750 °C in oxidising and reducing atmospheres.',img:'',specs:[{k:'OD',v:'4–120 mm'},{k:'Purity',v:'99.7% Al₂O₃'},{k:'Temp.',v:'Up to 1750°C'}],color:'#b45309'},
+         {name:'Alumina Crucibles',tag:'Crucibles',desc:'Dense sintered alumina crucibles for metal analysis, ash testing, and high-temperature synthesis. Resistant to most acids and alkalis.',img:'',specs:[{k:'Vol.',v:'1–500 mL'},{k:'Purity',v:'99.5% Al₂O₃'},{k:'Shape',v:'Cylinder/Boat'}],color:'#92400e'},
+         {name:'Alumina Substrates',tag:'Substrates',desc:'Precision-lapped and polished alumina substrates for thick-film electronics, sensors, and circuit boards.',img:'',specs:[{k:'Size',v:'Custom up to 200×200mm'},{k:'Thickness',v:'0.25–3 mm'},{k:'Ra',v:'<0.1 µm'}],color:'#78350f'},
+         {name:'Alumina Rods & Bars',tag:'Rods & Bars',desc:'Extruded and isostatic-pressed alumina rods for insulation standoffs, electrical isolators, and wear components.',img:'',specs:[{k:'Dia.',v:'3–100 mm'},{k:'Length',v:'Up to 1000 mm'},{k:'Purity',v:'95–99.7%'}],color:'#b45309'},
+       ]},
+    ]
+  },
+
+  heaters: {
+    id:'heaters', label:'Customised Heaters', accent:'#ef4444',
+    bg:'linear-gradient(135deg,#1c0505 0%,#7f1d1d 60%,#1c0505 100%)',
+    glow:'rgba(239,68,68,.15)',
+    desc:'Industrial electric heaters custom-engineered to your watt density, fluid type, temperature, and flange specification. Designed for oil & gas, chemical, food, and water treatment industries.',
+    cta:'Every heater is custom-built to order.', ctaDesc:'Submit your process conditions and our heater engineers will design and quote within 24 hours.',
+    subcategories:[
+      {id:'heaters-flanged', label:'Flanged Heaters', tag:'Immersion', accent:'#f97316',
+       desc:'Over-the-flange immersion heaters for tanks, vessels, and pressure vessels. Available in ANSI, DIN, and BS flanges.',
+       specs:[{k:'Power',v:'Up to 5000 kW'},{k:'Temp.',v:'Up to +850°C'},{k:'Flange',v:'ANSI/DIN/BS'}],
+       color:'#c2410c', hasDeep:true,
+       deepItems:[
+         {name:'FH-100 Standard Flanged Heater',tag:'Standard',desc:'ANSI 150–600# flanged immersion heater for water, oil, and chemical processes. Carbon steel or stainless construction.',img:'',specs:[{k:'Power',v:'3–600 kW'},{k:'Flange',v:'ANSI 150–600#'},{k:'Element',v:'316SS sheath'}],color:'#c2410c'},
+         {name:'FH-200 High-Density Flanged',tag:'High Density',desc:'High watt density flanged heater with optimised element layout for compact vessel installations.',img:'',specs:[{k:'Watt Density',v:'Up to 30 W/cm²'},{k:'Power',v:'Up to 1200 kW'},{k:'Voltage',v:'240–690V'}],color:'#9a3412'},
+         {name:'FH-300 Low-Watt Density',tag:'Low WD',desc:'Low watt density flanged heater for viscous oils, heat-sensitive fluids, and asphalt applications.',img:'',specs:[{k:'Watt Density',v:'1–6 W/cm²'},{k:'Media',v:'Heavy oil/asphalt'},{k:'Sheath',v:'Carbon steel/Incoloy'}],color:'#7c2d12'},
+         {name:'FH-400 Hazardous Area',tag:'ATEX',desc:'ATEX/IECEx certified flanged heater for Zone 1 & 2 explosive atmospheres in offshore and petrochemical plants.',img:'',specs:[{k:'Zone',v:'Zone 1 & 2'},{k:'Cert.',v:'ATEX/IECEx'},{k:'Power',v:'Up to 500 kW'}],color:'#c2410c'},
+       ]},
+      {id:'heaters-circulation', label:'Circulation Heaters', tag:'Inline', accent:'#f59e0b',
+       desc:'Inline duct and pipe heaters for forced-flow heating of liquids, gases, and steam in closed-loop systems.',
+       specs:[{k:'Power',v:'Up to 2000 kW'},{k:'Flow',v:'Gas/Liquid'},{k:'Conn.',v:'Flanged/Threaded'}],
+       color:'#b45309', hasDeep:true,
+       deepItems:[
+         {name:'CH-100 Liquid Circulation Heater',tag:'Liquid',desc:'Inline flanged heater for water, thermal oils, and mild chemicals. Stainless steel terminal head with thermostat pocket.',img:'',specs:[{k:'Power',v:'3–2000 kW'},{k:'Temp.',v:'Up to +600°C'},{k:'Conn.',v:'Flanged ANSI/DIN'}],color:'#b45309'},
+         {name:'CH-200 Gas & Air Heater',tag:'Gas/Air',desc:'High-efficiency inline gas and air heater with open-coil or sheathed elements for process gas pre-heating.',img:'',specs:[{k:'Media',v:'Air/Gas/Steam'},{k:'Power',v:'Up to 500 kW'},{k:'Temp.',v:'Up to +850°C'}],color:'#92400e'},
+         {name:'CH-300 Steam Superheater',tag:'Steam',desc:'Superheating element bundle for saturated steam to superheated steam conversion in industrial processes.',img:'',specs:[{k:'Media',v:'Steam'},{k:'Power',v:'Up to 1000 kW'},{k:'Pressure',v:'Up to 40 bar'}],color:'#78350f'},
+         {name:'CH-400 Compact Inline',tag:'Compact',desc:'Compact threaded-connection inline heater for low-flow laboratory and pilot plant applications.',img:'',specs:[{k:'Power',v:'0.5–30 kW'},{k:'Conn.',v:'BSP/NPT'},{k:'Body',v:'316SS'}],color:'#b45309'},
+       ]},
+      {id:'heaters-screwplug', label:'Screw Plug Heaters', tag:'Threaded', accent:'#22d3ee',
+       desc:'Threaded immersion heaters for small tanks, water heaters, and pressure vessels where flange access is not available.',
+       specs:[{k:'Power',v:'Up to 54 kW'},{k:'Thread',v:'BSP/NPT'},{k:'Temp.',v:'Up to +840°C'}],
+       color:'#0e7490', hasDeep:true,
+       deepItems:[
+         {name:'SP-100 Standard Screw Plug',tag:'Standard',desc:'BSP or NPT threaded screw plug heater for water tanks, oil sumps, and small vessels. Multiple element options.',img:'',specs:[{k:'Thread',v:'1"–3" BSP/NPT'},{k:'Power',v:'0.5–54 kW'},{k:'Sheath',v:'Copper/Incoloy/316SS'}],color:'#0e7490'},
+         {name:'SP-200 High-Temperature',tag:'High Temp',desc:'High-temperature screw plug heater with Incoloy or titanium sheath for aggressive media up to 840 °C.',img:'',specs:[{k:'Temp.',v:'Up to +840°C'},{k:'Sheath',v:'Incoloy 800/Titanium'},{k:'Power',v:'Up to 36 kW'}],color:'#155e75'},
+         {name:'SP-300 ATEX Screw Plug',tag:'ATEX',desc:'Explosion-proof screw plug heater with certified terminal head for Zone 1/2 hazardous locations.',img:'',specs:[{k:'Zone',v:'Zone 1 & 2'},{k:'Cert.',v:'ATEX IECEx'},{k:'Power',v:'Up to 18 kW'}],color:'#0e7490'},
+         {name:'SP-400 Flanged Screw Plug',tag:'Flanged',desc:'Screw plug heater with integral mounting flange for easier installation in larger vessel nozzles.',img:'',specs:[{k:'Flange',v:'DN 40–DN 80'},{k:'Power',v:'Up to 54 kW'},{k:'Material',v:'316SS/Duplex'}],color:'#164e63'},
+       ]},
+      {id:'heaters-overside', label:'Over-the-Side Heaters', tag:'Portable', accent:'#a3e635',
+       desc:'Portable U-shaped immersion heaters for open tanks and drums — no drilling required, instant deployment.',
+       specs:[{k:'Power',v:'1–150 kW'},{k:'Voltage',v:'110–480V'},{k:'Length',v:'Custom'}],
+       color:'#4d7c0f', hasDeep:true,
+       deepItems:[
+         {name:'OTS-100 Standard Over-the-Side',tag:'Standard',desc:'U-shaped stainless steel over-the-side heater for open tanks of water, oil, and mild chemicals. Hook-over mounting.',img:'',specs:[{k:'Power',v:'1–75 kW'},{k:'Sheath',v:'316SS/Incoloy'},{k:'Voltage',v:'240/480V'}],color:'#4d7c0f'},
+         {name:'OTS-200 Heavy Duty',tag:'Heavy Duty',desc:'Heavy-duty over-the-side heater for viscous oils, wax, and tar heating in large industrial tanks.',img:'',specs:[{k:'Power',v:'Up to 150 kW'},{k:'Temp.',v:'Up to +760°C'},{k:'Sheath',v:'Incoloy 840'}],color:'#3f6212'},
+         {name:'OTS-300 Drum Heater',tag:'Drum',desc:'Compact over-the-side heater sized for 55-gallon (200 L) drums and IBC totes for viscous material heating.',img:'',specs:[{k:'Power',v:'1–6 kW'},{k:'Voltage',v:'110–240V'},{k:'Drum',v:'200L/IBC'}],color:'#365314'},
+         {name:'OTS-400 ATEX Portable',tag:'ATEX',desc:'ATEX-rated portable over-the-side heater for Zone 2 hazardous area tanks — petrochemical and solvent applications.',img:'',specs:[{k:'Zone',v:'Zone 2'},{k:'Power',v:'Up to 30 kW'},{k:'Cert.',v:'ATEX'}],color:'#4d7c0f'},
+       ]},
+    ]
+  },
+
+  reactors: {
+    id:'reactors', label:'Reactors', accent:'#10b981',
+    bg:'linear-gradient(135deg,#022c22 0%,#065f46 60%,#022c22 100%)',
+    glow:'rgba(16,185,129,.15)',
+    desc:'Precision-engineered laboratory and pilot-scale reactors for catalysis research, chemical synthesis, and process development. Custom-designed to your operating conditions.',
+    cta:'Bespoke reactor design available.', ctaDesc:'Provide your temperature, pressure, flow, and chemistry requirements and our reactor engineers will deliver a full specification.',
+    subcategories:[
+      {id:'reactors-tubular', label:'Tubular Reactors', tag:'Continuous Flow', accent:'#34d399',
+       desc:'Single and multi-tube fixed-bed and empty-tube reactors for heterogeneous catalysis, pyrolysis, and gas-phase reactions.',
+       specs:[{k:'Temp.',v:'Up to 1200°C'},{k:'Pressure',v:'Up to 200 bar'},{k:'Flow',v:'mL/min–L/min'}],
+       color:'#059669', hasDeep:false,
+       products:[
+         {name:'TR-100 Single Tube Reactor',tag:'Fixed Bed',desc:'Single tube fixed-bed reactor with quartz or alumina tube, four-zone furnace, and mass flow control.',img:'',specs:[{k:'Tube OD',v:'12–100 mm'},{k:'Temp.',v:'Up to 1200°C'},{k:'Pressure',v:'Up to 200 bar'}],color:'#059669'},
+         {name:'TR-200 Multi-Tube Parallel',tag:'Parallel',desc:'4 or 8-tube parallel reactor for high-throughput catalyst screening with independent temperature control.',img:'',specs:[{k:'Tubes',v:'4 or 8'},{k:'Temp.',v:'Up to 1000°C'},{k:'Control',v:'Independent'}],color:'#047857'},
+         {name:'TR-300 High-Temperature Cracker',tag:'Pyrolysis',desc:'High-temperature cracking reactor for pyrolysis and steam reforming up to 1200 °C with induction or resistance heating.',img:'',specs:[{k:'Temp.',v:'Up to 1200°C'},{k:'Media',v:'Gas/vapour'},{k:'Heating',v:'Resistance/Induction'}],color:'#065f46'},
+         {name:'TR-400 Micro Tube Reactor',tag:'Micro',desc:'Miniaturised tube reactor for μmol-scale catalyst testing with minimal material consumption.',img:'',specs:[{k:'Volume',v:'0.1–5 mL'},{k:'Temp.',v:'Up to 900°C'},{k:'Flow',v:'0.1–50 mL/min'}],color:'#059669'},
+       ]},
+      {id:'reactors-batch', label:'Batch Reactors', tag:'Autoclave', accent:'#6ee7b7',
+       desc:'Stirred tank autoclaves for liquid-phase synthesis, hydrogenation, and polymerisation reactions at elevated pressure and temperature.',
+       specs:[{k:'Volume',v:'50 mL–50 L'},{k:'Pressure',v:'Up to 350 bar'},{k:'Temp.',v:'Up to 500°C'}],
+       color:'#047857', hasDeep:false,
+       products:[
+         {name:'BR-100 Laboratory Autoclave',tag:'Lab Scale',desc:'Benchtop stirred autoclave for 50–2000 mL, rated to 350 bar and 500 °C. Hastelloy or titanium body options.',img:'',specs:[{k:'Volume',v:'50–2000 mL'},{k:'Pressure',v:'350 bar'},{k:'Temp.',v:'500°C max'}],color:'#047857'},
+         {name:'BR-200 Pilot Autoclave',tag:'Pilot Scale',desc:'Pilot-scale 5–50 L autoclave with magnetically coupled stirrer, gas-liquid sampling, and PLC control.',img:'',specs:[{k:'Volume',v:'5–50 L'},{k:'Pressure',v:'200 bar'},{k:'Stirrer',v:'Mag. coupled'}],color:'#065f46'},
+         {name:'BR-300 Mini Autoclave',tag:'Mini',desc:'Compact 10–100 mL mini autoclave for precious catalyst screening with minimal reagent usage.',img:'',specs:[{k:'Volume',v:'10–100 mL'},{k:'Pressure',v:'200 bar'},{k:'Material',v:'Hastelloy/SS316'}],color:'#047857'},
+         {name:'BR-400 Flow-Through Cell',tag:'Flow Cell',desc:'High-pressure flow-through reaction cell for in-situ spectroscopy (XRD, FTIR, Raman) during reactions.',img:'',specs:[{k:'Window',v:'Sapphire/Diamond'},{k:'Pressure',v:'Up to 500 bar'},{k:'Temp.',v:'Up to 400°C'}],color:'#064e3b'},
+       ]},
+      {id:'reactors-fixedbed', label:'Fixed-Bed Reactors', tag:'Catalysis', accent:'#a7f3d0',
+       desc:'Down-flow and up-flow fixed-bed reactors for gas-solid catalytic reactions, hydrotreating, and dehydrogenation.',
+       specs:[{k:'Temp.',v:'Up to 900°C'},{k:'Pressure',v:'Up to 150 bar'},{k:'GHSV',v:'100–50000 h⁻¹'}],
+       color:'#065f46', hasDeep:false,
+       products:[
+         {name:'FB-100 Isothermal Fixed Bed',tag:'Isothermal',desc:'Isothermal fixed-bed reactor with diluted catalyst bed, thermowell array, and differential pressure monitoring.',img:'',specs:[{k:'Tube ID',v:'10–50 mm'},{k:'Temp.',v:'Up to 900°C'},{k:'Pressure',v:'150 bar max'}],color:'#065f46'},
+         {name:'FB-200 Adiabatic Fixed Bed',tag:'Adiabatic',desc:'Adiabatic fixed-bed reactor with insulated vessel and axial thermocouple array for exothermic reactions.',img:'',specs:[{k:'Volume',v:'0.5–10 L'},{k:'Pressure',v:'100 bar'},{k:'TC Array',v:'Up to 20 pts'}],color:'#047857'},
+         {name:'FB-300 Three-Phase Trickle Bed',tag:'Trickle Bed',desc:'Gas-liquid-solid trickle-bed reactor for hydroprocessing, oxidation, and hydrogenation reactions.',img:'',specs:[{k:'Phases',v:'Gas/Liquid/Solid'},{k:'Temp.',v:'Up to 450°C'},{k:'Pressure',v:'200 bar'}],color:'#064e3b'},
+         {name:'FB-400 Radial Flow Reactor',tag:'Radial Flow',desc:'Radial-flow fixed-bed reactor for low-pressure-drop applications in ammonia synthesis and reforming.',img:'',specs:[{k:'Flow',v:'Radial in/out'},{k:'Pressure',v:'Up to 300 bar'},{k:'Temp.',v:'Up to 600°C'}],color:'#065f46'},
+       ]},
+      {id:'reactors-micro', label:'Micro Reactors', tag:'Microfluidic', accent:'#34d399',
+       desc:'Chip-based and milli-scale continuous flow reactors for process intensification, rapid screening, and hazardous chemistry.',
+       specs:[{k:'Volume',v:'0.01–10 mL'},{k:'Temp.',v:'−20 to +300°C'},{k:'Pressure',v:'Up to 100 bar'}],
+       color:'#059669', hasDeep:false,
+       products:[
+         {name:'MR-100 Glass Chip Reactor',tag:'Chip',desc:'Borosilicate glass microreactor chip with integrated mixing and heat exchange channels for transparent process visualisation.',img:'',specs:[{k:'Channel vol.',v:'0.01–1 mL'},{k:'Pressure',v:'10 bar max'},{k:'Temp.',v:'−20 to +200°C'}],color:'#059669'},
+         {name:'MR-200 Stainless Milli Reactor',tag:'Milli',desc:'Stainless steel milli-reactor with modular plate design for high-pressure continuous flow synthesis.',img:'',specs:[{k:'Volume',v:'1–10 mL'},{k:'Pressure',v:'100 bar'},{k:'Temp.',v:'Up to +300°C'}],color:'#047857'},
+         {name:'MR-300 Photochemical Reactor',tag:'Photochem',desc:'UV/Vis photochemical flow reactor with LED array for photocatalysis and photoredox chemistry.',img:'',specs:[{k:'Light',v:'UV/Vis LED'},{k:'Volume',v:'0.1–5 mL'},{k:'Flow',v:'0.1–100 mL/min'}],color:'#065f46'},
+         {name:'MR-400 Electrochemical Cell',tag:'Electrochemical',desc:'Continuous-flow electrochemical cell for electrosynthesis, oxidation, and reduction reactions at scale.',img:'',specs:[{k:'Electrode',v:'Pt/RVC/DSA'},{k:'Current',v:'Up to 100 A'},{k:'Volume',v:'1–50 mL'}],color:'#059669'},
+       ]},
+    ]
+  }
+};
+
+/* ═══════════════════════════════════════════
+   ROUTING & STATE
+═══════════════════════════════════════════ */
+let STATE = { section:null, sub:null, deep:null };
+
+function nav(section, sub, deep){
+  // Hide all pages
+  document.getElementById('page-home').style.display='none';
+  ['sensors','ceramics','heaters','reactors'].forEach(s=>document.getElementById('page-'+s).style.display='none');
+  document.getElementById('page-deep').style.display='none';
+  document.getElementById('page-leaf').style.display='none';
+
+  // Update nav active state
+  ['sensors','ceramics','heaters','reactors'].forEach(s=>{
+    const btn=document.getElementById('nav-'+s);
+    if(btn) btn.classList.toggle('active', s===section);
+  });
+
+  STATE={section,sub,deep};
+
+  if(!section || section==='home'){
+    document.getElementById('page-home').style.display='block';
+    document.getElementById('nav-sensors') && document.getElementById('nav-sensors').classList.remove('active');
+    window.scrollTo(0,0); return;
+  }
+  if(section && !sub){
+    renderSection(section);
+    document.getElementById('page-'+section).style.display='block';
+    window.scrollTo(0,0); return;
+  }
+  if(section && sub && !deep){
+    renderDeep(section, sub);
+    document.getElementById('page-deep').style.display='block';
+    window.scrollTo(0,0); return;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   LEVEL 1 — SECTION PAGE
+═══════════════════════════════════════════ */
+function renderSection(sectionId){
+  const cfg=DATA[sectionId];
+  const el=document.getElementById('page-'+sectionId);
+
+  const cards=cfg.subcategories.map(sub=>{
+    const ph=svgPlaceholder(sub.label, sub.color, 280, 160);
+    const badge=sub.hasDeep?`<span class="deep-badge">3 sub-types ›</span>`:'';
+    return `<div class="win-card" onclick="nav('${sectionId}','${sub.id}')">
+      ${badge}
+      <div class="win-card-img-placeholder" style="background:linear-gradient(135deg,${sub.color}22 0%,${sub.color}08 100%);">${ph}</div>
+      <div class="win-card-body">
+        <span class="win-card-tag" style="color:${sub.accent};border-color:${sub.accent}33;background:${sub.accent}11;">${sub.tag}</span>
+        <p class="win-card-name">${sub.label}</p>
+        <p class="win-card-desc">${sub.desc}</p>
+        <div class="win-card-specs">${sub.specs.map(s=>`<div class="win-spec-item"><span class="win-spec-key">${s.k}</span><span class="win-spec-val">${s.v}</span></div>`).join('')}</div>
+        <div class="win-card-footer">
+          <button class="win-card-cta" style="background:${sub.accent};color:#fff;" onclick="event.stopPropagation();nav('${sectionId}','${sub.id}')">View Products</button>
+          <span class="win-card-arrow">›</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML=`
+  ${buildStickyNav(sectionId, cfg)}
+  <div class="page">
+    ${buildBreadcrumb([{label:'Home',action:"nav('home')"},{label:cfg.label,action:'',current:true}])}
+    <div class="sec-hero" style="background:${cfg.bg};">
+      <div class="sec-hero-glow" style="background:radial-gradient(circle,${cfg.glow} 0%,transparent 70%);"></div>
+      <div class="sec-hero-inner">
+        <p class="eyebrow" style="color:${cfg.accent};"><span style="display:inline-block;width:20px;height:1.5px;background:${cfg.accent};margin-right:8px;"></span>ESE Instruments</p>
+        <h2>${cfg.label} <em style="color:${cfg.accent};">Products</em></h2>
+        <p>${cfg.desc}</p>
+      </div>
+    </div>
+    <div class="sec-content">
+      <div class="sec-title"><h3>${cfg.label} — Product Categories</h3><p>Select a category to explore the full product range</p></div>
+      <div class="window-grid">${cards}</div>
+      ${buildCTA(cfg)}
+    </div>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════
+   LEVEL 2 — DEEP / PRODUCTS PAGE
+═══════════════════════════════════════════ */
+function renderDeep(sectionId, subId){
+  const cfg=DATA[sectionId];
+  const sub=cfg.subcategories.find(s=>s.id===subId);
+  const el=document.getElementById('page-deep');
+
+  let cardsHTML='';
+  if(sub.hasDeep){
+    // Show deep item windows (dark navy cards)
+    cardsHTML=`<div class="window-grid">${sub.deepItems.map(item=>`
+      <div class="win-card" onclick="openLeaf('${sectionId}','${subId}','${item.name.replace(/'/g,"\\'")}')">
+        <div class="win-card-img-placeholder" style="background:linear-gradient(135deg,${item.color}22 0%,${item.color}08 100%);">${svgPlaceholder(item.name.split(' ').slice(0,2).join('\n'),item.color,280,160)}</div>
+        <div class="win-card-body">
+          <span class="win-card-tag" style="color:${sub.accent};border-color:${sub.accent}33;background:${sub.accent}11;">${item.tag}</span>
+          <p class="win-card-name">${item.name}</p>
+          <p class="win-card-desc">${item.desc}</p>
+          <div class="win-card-specs">${item.specs.map(s=>`<div class="win-spec-item"><span class="win-spec-key">${s.k}</span><span class="win-spec-val">${s.v}</span></div>`).join('')}</div>
+          <div class="win-card-footer">
+            <button class="win-card-cta" style="background:${sub.accent};color:#fff;" onclick="event.stopPropagation();openDS('${item.name}')">Datasheet</button>
+            <button class="win-card-cta" style="background:transparent;color:${sub.accent};border:1.5px solid ${sub.accent};margin-left:6px;" onclick="event.stopPropagation();openRQ('${item.name}')">Quote</button>
+          </div>
+        </div>
+      </div>`).join('')}</div>`;
+  } else {
+    // Show leaf product cards (light style)
+    cardsHTML=`<div class="prod-grid-3">${sub.products.map(p=>`
+      <div class="prod-card-3">
+        <div class="card-img-wrap">${p.img?`<img src="${p.img}" alt="${p.name}" onerror="this.parentNode.innerHTML=svgPlaceholderInline('${p.name.split(' ').slice(0,2).join(' ')}','${p.color}')"/>`:svgPlaceholderSmall(p.name.split(' ').slice(0,2).join('\n'),p.color)}</div>
+        <div class="card-body">
+          <span class="card-series-tag">${p.tag}</span>
+          <p class="card-name">${p.name}</p>
+          <p class="card-desc">${p.desc}</p>
+          <div class="card-spec-row">${p.specs.map(s=>`<div class="card-spec-item"><span class="card-spec-key">${s.k}</span><span class="card-spec-val">${s.v}</span></div>`).join('')}</div>
+          <div class="card-actions">
+            <button class="btn-ds" onclick="openDS('${p.name}')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Datasheet</button>
+            <button class="btn-rq" onclick="openRQ('${p.name}')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 14.66V20a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2h5.34"/><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"/></svg>Quote</button>
+          </div>
+        </div>
+      </div>`).join('')}</div>`;
+  }
+
+  el.innerHTML=`
+  ${buildStickyNav(sectionId, cfg)}
+  <div class="page">
+    ${buildBreadcrumb([
+      {label:'Home',action:"nav('home')"},
+      {label:cfg.label,action:`nav('${sectionId}')`},
+      {label:sub.label,action:'',current:true}
+    ])}
+    <div class="sec-hero" style="background:linear-gradient(135deg,${sub.color}44 0%,${sub.color}22 60%,#0d1f2d 100%);">
+      <div class="sec-hero-glow" style="background:radial-gradient(circle,${sub.accent}22 0%,transparent 70%);"></div>
+      <div class="sec-hero-inner">
+        <p class="eyebrow" style="color:${sub.accent};"><span style="display:inline-block;width:20px;height:1.5px;background:${sub.accent};margin-right:8px;"></span>${cfg.label}</p>
+        <h2>${sub.label} <em style="color:${sub.accent};">Series</em></h2>
+        <p>${sub.desc}</p>
+      </div>
+    </div>
+    <div class="sec-content">
+      <div class="sec-title"><h3>${sub.label} — ${sub.hasDeep?'Product Types':'Products'}</h3><p>${sub.hasDeep?'Select a product type to view specifications':'Complete product range with specifications and datasheet downloads'}</p></div>
+      ${cardsHTML}
+      ${buildCTA(cfg)}
+    </div>
+  </div>`;
+}
+
+function openLeaf(sectionId, subId, name){
+  openDS(name);
+}
+
+/* ═══════════════════════════════════════════
+   HELPERS — NAV, BREADCRUMB, CTA
+═══════════════════════════════════════════ */
+function buildStickyNav(activeSectionId, cfg){
+  const navItems=['sensors','ceramics','heaters','reactors'].map(s=>`
+    <button class="nav-item${s===activeSectionId?' active':''}" onclick="nav('${s}')" style="${s===activeSectionId?`position:relative;color:#fff;`:''}">
+      ${{sensors:'Sensors',ceramics:'Ceramics',heaters:'Customised Heaters',reactors:'Reactors'}[s]}
+      ${s===activeSectionId?`<span style="position:absolute;bottom:0;left:20px;right:20px;height:2px;background:${cfg.accent};border-radius:2px 2px 0 0;"></span>`:''}
+    </button>`).join('');
+  return `<div class="sticky-shell">
+    <div class="cat-header" style="background:var(--bg);position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(26,58,92,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(26,58,92,.04) 1px,transparent 1px);background-size:24px 24px;pointer-events:none;"></div>
+      <div style="position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;">
+        <button onclick="nav('home')" style="display:flex;align-items:center;gap:12px;background:none;border:none;cursor:pointer;">
+          <svg width="42" height="42" viewBox="-33 -33 66 66"><circle cx="0" cy="0" r="28" fill="none" stroke="#1a3a5c" stroke-width="1.6"/><circle cx="0" cy="0" r="19" fill="none" stroke="#1a3a5c" stroke-width="0.7" stroke-dasharray="2.5 3" opacity=".45"/><line x1="-33" y1="0" x2="-22" y2="0" stroke="#1a3a5c" stroke-width="1.8"/><line x1="22" y1="0" x2="33" y2="0" stroke="#1a3a5c" stroke-width="1.8"/><line x1="0" y1="-33" x2="0" y2="-22" stroke="#1a3a5c" stroke-width="1.8"/><line x1="0" y1="22" x2="0" y2="33" stroke="#1a3a5c" stroke-width="1.8"/><line x1="0" y1="0" x2="13" y2="-13" stroke="#c0392b" stroke-width="2.2" stroke-linecap="round"/><circle cx="0" cy="0" r="3.5" fill="#1a3a5c"/><circle cx="0" cy="0" r="1.5" fill="#fafafa"/><circle cx="13" cy="-13" r="2" fill="#c0392b"/></svg>
+          <div><p style="font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.5px;margin:0;">ESE</p><span style="font-size:9px;font-weight:300;color:var(--navy);letter-spacing:6px;">INSTRUMENTS</span></div>
+        </button>
+        <button onclick="nav('home')" style="display:flex;align-items:center;gap:7px;background:var(--ice);border:1px solid var(--mist);color:var(--navy);font-size:12px;font-weight:600;padding:8px 14px;border-radius:2px;cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.background='var(--navy)';this.style.color='#fff'" onmouseout="this.style.background='var(--ice)';this.style.color='var(--navy)'">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>Home
+        </button>
+      </div>
+      <div style="height:1px;background:var(--mist);"></div>
+    </div>
+    <nav style="background:var(--navy);">
+      <div class="nav-inner">${navItems}<div class="nav-spacer"></div><button class="nav-cta" onclick="openRQ('General Inquiry')">Request Quote</button></div>
+    </nav>
+  </div>`;
+}
+
+function buildBreadcrumb(crumbs){
+  const items=crumbs.map((c,i)=>{
+    if(c.current) return `<span class="bc-item current">${c.label}</span>`;
+    return `<span class="bc-item" onclick="${c.action}">${c.label}</span>`;
+  }).join('<span class="bc-sep"> › </span>');
+  return `<div class="breadcrumb"><div class="breadcrumb-inner">${items}</div></div>`;
+}
+
+function buildCTA(cfg){
+  return `<div class="sec-cta"><div><h4>${cfg.cta}</h4><p>${cfg.ctaDesc}</p></div><button class="sec-cta-btn" onclick="openContact()">Contact Engineering</button></div>`;
+}
+
+/* ═══════════════════════════════════════════
+   SVG PLACEHOLDERS
+═══════════════════════════════════════════ */
+function svgPlaceholder(label, color, w, h){
+  const lines=label.split('\n');
+  const texts=lines.map((l,i)=>`<text x="50%" y="${h/2+(i-(lines.length-1)/2)*20}" text-anchor="middle" font-size="13" font-weight="700" font-family="Helvetica Neue,sans-serif" fill="${color}" opacity="0.4">${l}</text>`).join('');
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+    <rect width="${w}" height="${h}" fill="${color}" opacity="0.04"/>
+    <rect x="1" y="1" width="${w-2}" height="${h-2}" fill="none" stroke="${color}" stroke-width="1" opacity="0.1" stroke-dasharray="6 4"/>
+    <rect x="${w*.15}" y="${h*.2}" width="${w*.5}" height="8" rx="2" fill="${color}" opacity="0.12"/>
+    <rect x="${w*.15}" y="${h*.38}" width="${w*.35}" height="6" rx="2" fill="${color}" opacity="0.08"/>
+    <rect x="${w*.15}" y="${h*.52}" width="${w*.6}" height="5" rx="2" fill="${color}" opacity="0.06"/>
+    <rect x="${w*.7}" y="${h*.2}" width="${w*.15}" height="${h*.4}" rx="3" fill="${color}" opacity="0.1"/>
+    ${texts}
+    <text x="50%" y="${h-8}" text-anchor="middle" font-size="8" font-family="Helvetica Neue,sans-serif" fill="${color}" opacity="0.25" letter-spacing="1">IMAGE PLACEHOLDER</text>
+  </svg>`;
+}
+
+function svgPlaceholderSmall(label, color){
+  return svgPlaceholder(label, color, 240, 130);
+}
+
+/* ═══════════════════════════════════════════
+   MODALS
+═══════════════════════════════════════════ */
+function isEmail(v){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
+function setErr(a,b,s){const i=document.getElementById(a),e=document.getElementById(b);if(i)i.classList.toggle('error',s);if(e)e.style.display=s?'block':'none';}
+
+function openDS(n){
+  document.getElementById('ds-name').textContent=n;
+  document.getElementById('ds-body').style.display='flex';
+  document.getElementById('ds-success').style.display='none';
+  ['ds-email','ds-fname','ds-company'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  setErr('ds-email','ds-email-err',false);
+  document.getElementById('ds-modal').style.display='flex';
+}
+function submitDS(){
+  if(!isEmail(document.getElementById('ds-email').value.trim())){setErr('ds-email','ds-email-err',true);return;}
+  setErr('ds-email','ds-email-err',false);
+  document.getElementById('ds-body').style.display='none';
+  document.getElementById('ds-success').style.display='flex';
+  document.getElementById('ds-success-msg').textContent='Datasheet for "'+document.getElementById('ds-name').textContent+'" is downloading.';
+}
+function openRQ(n){
+  document.getElementById('rq-name').textContent=n;
+  document.getElementById('rq-body').style.display='flex';
+  document.getElementById('rq-success').style.display='none';
+  ['rq-name-input','rq-email','rq-company','rq-qty','rq-msg'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  setErr('rq-name-input','rq-name-err',false);setErr('rq-email','rq-email-err',false);
+  document.getElementById('rq-modal').style.display='flex';
+}
+function submitRQ(){
+  const n=document.getElementById('rq-name-input').value.trim(),e=document.getElementById('rq-email').value.trim();
+  let ok=true;
+  if(!n){setErr('rq-name-input','rq-name-err',true);ok=false;}else setErr('rq-name-input','rq-name-err',false);
+  if(!isEmail(e)){setErr('rq-email','rq-email-err',true);ok=false;}else setErr('rq-email','rq-email-err',false);
+  if(!ok)return;
+  document.getElementById('rq-body').style.display='none';
+  document.getElementById('rq-success').style.display='flex';
+}
+function openContact(){
+  document.getElementById('contact-body').style.display='flex';
+  document.getElementById('contact-success').style.display='none';
+  ['ct-name','ct-email','ct-subject','ct-msg'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  setErr('ct-name','ct-name-err',false);setErr('ct-email','ct-email-err',false);setErr('ct-msg','ct-msg-err',false);
+  document.getElementById('contact-modal').style.display='flex';
+}
+function submitContact(){
+  const n=document.getElementById('ct-name').value.trim(),e=document.getElementById('ct-email').value.trim(),m=document.getElementById('ct-msg').value.trim();
+  let ok=true;
+  if(!n){setErr('ct-name','ct-name-err',true);ok=false;}else setErr('ct-name','ct-name-err',false);
+  if(!isEmail(e)){setErr('ct-email','ct-email-err',true);ok=false;}else setErr('ct-email','ct-email-err',false);
+  if(!m){setErr('ct-msg','ct-msg-err',true);ok=false;}else setErr('ct-msg','ct-msg-err',false);
+  if(!ok)return;
+  document.getElementById('contact-body').style.display='none';
+  document.getElementById('contact-success').style.display='flex';
+}
+function closeModal(id){document.getElementById(id).style.display='none';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')['ds-modal','rq-modal','contact-modal'].forEach(closeModal);});
+
+/* ═══════════════════════════════════════════
+   RULER INIT
+═══════════════════════════════════════════ */
+(function(){
+  const r=document.getElementById('ruler');
+  for(let i=1;i<=32;i++){const s=document.createElement('span');s.style.left=(i*3.1)+'%';s.style.height=i%3===0?'7px':'4px';r.appendChild(s);}
+})();
+</script>
+</body>
+</html>
